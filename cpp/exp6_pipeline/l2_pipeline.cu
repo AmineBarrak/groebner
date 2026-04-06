@@ -601,147 +601,326 @@ static WPoly weighted_homogenize_xs(const WPoly& f) {
     return result;
 }
 
+/* ------------------------------------------------------------------ *
+ * Stage 2 – Linear-algebra ansatz                                     *
+ *                                                                     *
+ * Enumerate all monomials x0^a x1^b x2^c x3^d of weighted degree D   *
+ * (weights 2,4,6,10).  Substitute the L2 parametrisation and require  *
+ * the result to vanish identically in (t1,t2).  This gives a linear   *
+ * system whose kernel is the defining polynomial of the hypersurface  *
+ * image in P(2,4,6,10).                                               *
+ *                                                                     *
+ * Gaussian elimination over Z (fraction-free) is used; the matrix is  *
+ * at most ~72 x 47 for D = 30.                                       *
+ * ------------------------------------------------------------------ */
+
+/* Helper: polynomial in t1,t2 represented as map<(e1,e2), mpz_class>. */
+using TPoly = std::map<std::pair<int,int>, mpz_class>;
+
+static TPoly tp_mul(const TPoly& a, const TPoly& b) {
+    TPoly r;
+    for (const auto& [ea, ca] : a)
+        for (const auto& [eb, cb] : b) {
+            auto key = std::make_pair(ea.first+eb.first, ea.second+eb.second);
+            r[key] += ca * cb;
+        }
+    // remove zeros
+    for (auto it = r.begin(); it != r.end(); )
+        if (it->second == 0) it = r.erase(it); else ++it;
+    return r;
+}
+
+static TPoly tp_scale(const TPoly& a, long c) {
+    TPoly r;
+    for (const auto& [k, v] : a) {
+        mpz_class p = v * c;
+        if (p != 0) r[k] = p;
+    }
+    return r;
+}
+
+static std::vector<TPoly> tp_powers(const TPoly& base, int max_pow) {
+    std::vector<TPoly> pows(max_pow + 1);
+    pows[0][{0,0}] = 1;
+    for (int i = 1; i <= max_pow; ++i)
+        pows[i] = tp_mul(pows[i-1], base);
+    return pows;
+}
+
 static std::vector<WPoly> stage2_elimination(
     const std::vector<WPoly>& /*hom_gens*/, double& time_ms)
 {
     auto t0 = Clock::now();
+    const int D = 30;                       // target weighted degree
+    const int w[4] = {2, 4, 6, 10};        // weights of x0..x3
 
-    std::cout << "  Strategy: affine substitution chain + weighted homogenize + resultant in s\n";
+    std::cout << "  Strategy: linear-algebra ansatz (weighted degree " << D << ")\n";
 
-    // Use AFFINE generators
-    std::vector<WPoly> gens = build_l2_affine_generators();
+    /* ---- Step A: enumerate monomials of weighted degree D ---- */
+    struct XMono { int a, b, c, d; };
+    std::vector<XMono> monoms;
+    for (int dd = 0; dd * w[3] <= D; ++dd)
+        for (int cc = 0; cc * w[2] + dd * w[3] <= D; ++cc)
+            for (int bb = 0; bb * w[1] + cc * w[2] + dd * w[3] <= D; ++bb) {
+                int rem = D - dd * w[3] - cc * w[2] - bb * w[1];
+                if (rem >= 0 && rem % w[0] == 0)
+                    monoms.push_back({rem / w[0], bb, cc, dd});
+            }
+    const int ncols = (int)monoms.size();
+    std::cout << "  Monomials of weighted degree " << D << ": " << ncols << "\n";
 
-    // Step A: From F0, substitute t1 = -(x0+120)/8 into F1, F2, F3
-    std::cout << "  Step A: Substituting t1 from F0 into F1, F2, F3\n";
-    WPoly F1p = substitute_t1_affine(gens[1]);
-    WPoly F2p = substitute_t1_affine(gens[2]);
-    WPoly F3p = substitute_t1_affine(gens[3]);
-    std::cout << "  F1' (in t2, x0, x1): " << F1p.nnz() << " terms\n";
-    std::cout << "  F2' (in t2, x0, x2): " << F2p.nnz() << " terms\n";
-    std::cout << "  F3' (in t2, x0, x3): " << F3p.nnz() << " terms\n";
+    /* ---- Step B: build parametrisation as TPolys ---- */
+    // x0 = -120 - 8*t1
+    TPoly px0 = {{{0,0}, -120}, {{1,0}, -8}};
+    // x1 = t1^2 - 126*t1 + 12*t2 + 405
+    TPoly px1 = {{{2,0}, 1}, {{1,0}, -126}, {{0,1}, 12}, {{0,0}, 405}};
+    // x2 = -3*t1^3 + 53*t1^2 - 20*t1*t2 + 2583*t1 - 12*t2 - 14985
+    TPoly px2 = {{{3,0}, -3}, {{2,0}, 53}, {{1,1}, -20},
+                 {{1,0}, 2583}, {{0,1}, -12}, {{0,0}, -14985}};
+    // x3 = -2*(-t1^2 - 18*t1 + 4*t2 + 27)^2
+    TPoly inner = {{{2,0}, -1}, {{1,0}, -18}, {{0,1}, 4}, {{0,0}, 27}};
+    TPoly px3 = tp_scale(tp_mul(inner, inner), -2);
 
-    // Step B: From F1', extract t2 coefficient and remainder, substitute into F2', F3'
-    WPoly t2_coef, t2_rem;
-    for (const auto& [m, c] : F1p.terms) {
-        if (m[VAR_T2] == 1) {
-            Mono nm = m; nm[VAR_T2] = 0;
-            t2_coef.add_term(nm, c);
-        } else if (m[VAR_T2] == 0) {
-            t2_rem.add_term(m, c);
-        } else {
-            std::cout << "  WARNING: F1' has t2^" << m[VAR_T2] << "\n";
+    /* Precompute powers */
+    int ma = 0, mb = 0, mc = 0, md = 0;
+    for (auto& m : monoms) {
+        ma = std::max(ma, m.a); mb = std::max(mb, m.b);
+        mc = std::max(mc, m.c); md = std::max(md, m.d);
+    }
+    auto x0p = tp_powers(px0, ma);
+    auto x1p = tp_powers(px1, mb);
+    auto x2p = tp_powers(px2, mc);
+    auto x3p = tp_powers(px3, md);
+    std::cout << "  Max powers: x0^" << ma << " x1^" << mb
+              << " x2^" << mc << " x3^" << md << "\n";
+
+    /* ---- Step C: substitute into each monomial, collect t-exponents ---- */
+    std::cout << "  Substituting parametrisation...\n";
+    std::vector<TPoly> cols(ncols);
+    std::set<std::pair<int,int>> t_set;
+    for (int j = 0; j < ncols; ++j) {
+        cols[j] = tp_mul(tp_mul(x0p[monoms[j].a], x1p[monoms[j].b]),
+                         tp_mul(x2p[monoms[j].c], x3p[monoms[j].d]));
+        for (const auto& [k, _] : cols[j]) t_set.insert(k);
+    }
+    std::vector<std::pair<int,int>> t_list(t_set.begin(), t_set.end());
+    std::map<std::pair<int,int>, int> t_idx;
+    for (int i = 0; i < (int)t_list.size(); ++i) t_idx[t_list[i]] = i;
+    const int nrows = (int)t_list.size();
+    std::cout << "  Matrix size: " << nrows << " x " << ncols << "\n";
+
+    /* ---- Step D: build matrix M (nrows x ncols) over Z ---- */
+    std::vector<std::vector<mpz_class>> M(nrows, std::vector<mpz_class>(ncols, 0));
+    for (int j = 0; j < ncols; ++j)
+        for (const auto& [k, v] : cols[j])
+            M[t_idx[k]][j] = v;
+
+    /* ---- Step E: Gaussian elimination to find kernel vector ---- *
+     * Fraction-free (Bareiss-style) over Z.                         *
+     * We expect a 1-dimensional kernel.                             */
+    std::cout << "  Gaussian elimination (" << nrows << " x " << ncols << ")...\n";
+
+    // Work on column-major copy for pivoting
+    // We reduce to row-echelon form and track pivot columns.
+    std::vector<int> pivot_col(nrows, -1);
+    std::vector<int> pivot_row;
+    int cur_row = 0;
+    for (int col = 0; col < ncols && cur_row < nrows; ++col) {
+        // Find pivot
+        int pr = -1;
+        for (int r = cur_row; r < nrows; ++r) {
+            if (M[r][col] != 0) { pr = r; break; }
         }
-    }
-    std::cout << "  t2 coef: " << t2_coef.nnz() << " terms, remainder: " << t2_rem.nnz() << " terms\n";
+        if (pr < 0) continue;  // free variable
 
-    std::cout << "  Step B: Substituting t2 into F2', F3'\n";
-    WPoly G2 = substitute_t2(F2p, t2_coef, t2_rem);
-    WPoly G3 = substitute_t2(F3p, t2_coef, t2_rem);
-    std::cout << "  G2 (x0,x1,x2): " << G2.nnz() << " terms\n";
-    std::cout << "  G3 (x0,x1,x3): " << G3.nnz() << " terms\n";
+        // Swap rows
+        if (pr != cur_row) std::swap(M[pr], M[cur_row]);
+        pivot_col[cur_row] = col;
+        pivot_row.push_back(cur_row);
 
-    // Verify: only x-variables remain
-    for (const auto& [m, _] : G2.terms) {
-        if (m[VAR_S]>0||m[VAR_T1]>0||m[VAR_T2]>0)
-        { std::cout << "  BUG: G2 has s/t1/t2!\n"; break; }
-    }
-    for (const auto& [m, _] : G3.terms) {
-        if (m[VAR_S]>0||m[VAR_T1]>0||m[VAR_T2]>0)
-        { std::cout << "  BUG: G3 has s/t1/t2!\n"; break; }
-    }
-
-    // Print weighted degree info
-    auto print_wdeg_range = [](const char* name, const WPoly& p) {
-        int lo = INT_MAX, hi = 0;
-        for (const auto& [m, _] : p.terms) {
-            int wd = 0;
-            for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
-            lo = std::min(lo, wd);
-            hi = std::max(hi, wd);
-        }
-        std::cout << "  " << name << " weighted degree range: [" << lo << ", " << hi << "]\n";
-    };
-    print_wdeg_range("G2", G2);
-    print_wdeg_range("G3", G3);
-
-    // Step C: Weighted-homogenize G2 and G3 (introduce s with deg(s)=1)
-    std::cout << "  Step C: Weighted homogenization\n";
-    WPoly G2_wh = weighted_homogenize_xs(G2);
-    WPoly G3_wh = weighted_homogenize_xs(G3);
-    std::cout << "  G2_wh: " << G2_wh.nnz() << " terms\n";
-    std::cout << "  G3_wh: " << G3_wh.nnz() << " terms\n";
-
-    // Step D: Convert to univariate in s, compute resultant
-    std::cout << "  Step D: Computing resultant in s\n";
-    UniS G2s = to_unis(G2_wh);
-    UniS G3s = to_unis(G3_wh);
-    int d2 = unis_degree(G2s);
-    int d3 = unis_degree(G3s);
-    std::cout << "  G2_wh degree in s: " << d2 << "\n";
-    std::cout << "  G3_wh degree in s: " << d3 << "\n";
-    std::cout << "  Sylvester matrix will be " << (d2+d3) << "x" << (d2+d3) << "\n";
-
-    // Strip common s factor
-    auto strip_s = [](UniS& p) -> int {
-        int shift = 0;
-        while (shift < (int)p.size() && p[shift].is_zero()) ++shift;
-        if (shift > 0) p = UniS(p.begin() + shift, p.end());
-        return shift;
-    };
-    int s2 = strip_s(G2s), s3 = strip_s(G3s);
-    if (s2 > 0 || s3 > 0) {
-        std::cout << "  Stripped s^" << s2 << " from G2, s^" << s3 << " from G3\n";
-        d2 = unis_degree(G2s); d3 = unis_degree(G3s);
-        std::cout << "  Effective degrees: G2=" << d2 << " G3=" << d3 << "\n";
-        std::cout << "  Effective Sylvester: " << (d2+d3) << "x" << (d2+d3) << "\n";
-    }
-
-    // ---- u = s^2 compression ----
-    // All weights (2,4,6,10) are even, so weighted homogenization only produces
-    // even powers of s.  Substitute u = s^2 to get a dense Sylvester matrix.
-    // G2s[k] is the coefficient of s^k; after compression G2u[j] = G2s[2j].
-    auto compress_even = [](const UniS& p, const char* name) -> UniS {
-        // Verify: all odd-indexed entries should be zero
-        for (int i = 1; i < (int)p.size(); i += 2) {
-            if (!p[i].is_zero()) {
-                std::cout << "  WARNING: " << name << "[" << i
-                          << "] has " << p[i].nnz() << " terms (expected 0)\n";
+        // Eliminate below
+        mpz_class piv = M[cur_row][col];
+        for (int r = 0; r < nrows; ++r) {
+            if (r == cur_row || M[r][col] == 0) continue;
+            mpz_class factor = M[r][col];
+            for (int c = 0; c < ncols; ++c) {
+                M[r][c] = M[r][c] * piv - factor * M[cur_row][c];
+            }
+            // Remove content from row to keep numbers small
+            mpz_class g = 0;
+            for (int c = 0; c < ncols; ++c) {
+                if (M[r][c] != 0) {
+                    if (g == 0) g = abs(M[r][c]);
+                    else mpz_gcd(g.get_mpz_t(), g.get_mpz_t(), M[r][c].get_mpz_t());
+                }
+            }
+            if (g > 1) {
+                for (int c = 0; c < ncols; ++c)
+                    if (M[r][c] != 0) mpz_divexact(M[r][c].get_mpz_t(),
+                                                    M[r][c].get_mpz_t(), g.get_mpz_t());
             }
         }
-        // Extract even-indexed entries
-        int new_deg = ((int)p.size() - 1) / 2;
-        UniS result(new_deg + 1);
-        for (int j = 0; j <= new_deg; ++j) {
-            int src = 2 * j;
-            if (src < (int)p.size()) result[j] = p[src];
+        ++cur_row;
+    }
+    int rank = cur_row;
+    int nullity = ncols - rank;
+    std::cout << "  Rank: " << rank << ", nullity: " << nullity << "\n";
+
+    if (nullity != 1) {
+        std::cout << "  ERROR: expected nullity 1, got " << nullity << "\n";
+        time_ms = elapsed_ms(t0);
+        return {};
+    }
+
+    /* Back-substitute to find kernel vector */
+    // Identify the free column (the one that is not a pivot column)
+    std::set<int> pivot_cols_set;
+    for (int r = 0; r < rank; ++r) pivot_cols_set.insert(pivot_col[r]);
+
+    int free_col = -1;
+    for (int c = 0; c < ncols; ++c) {
+        if (pivot_cols_set.find(c) == pivot_cols_set.end()) {
+            free_col = c; break;
         }
-        return result;
+    }
+    std::cout << "  Free variable: column " << free_col
+              << " = x0^" << monoms[free_col].a
+              << " x1^" << monoms[free_col].b
+              << " x2^" << monoms[free_col].c
+              << " x3^" << monoms[free_col].d << "\n";
+
+    // Set free variable = 1, solve for pivot variables
+    // From row r: M[r][pivot_col[r]] * x_{pivot_col[r]} + M[r][free_col] * 1 = 0
+    // => x_{pivot_col[r]} = -M[r][free_col] / M[r][pivot_col[r]]
+    // (exact since kernel is rational)
+    std::vector<mpz_class> kernel(ncols, 0);
+    kernel[free_col] = 1;
+
+    // Scale: multiply all by LCM of denominators
+    mpz_class lcm_denom = 1;
+    for (int r = rank - 1; r >= 0; --r) {
+        int pc = pivot_col[r];
+        mpz_class num = -M[r][free_col];
+        // Also subtract contributions from already-set pivot cols
+        for (int r2 = r + 1; r2 < rank; ++r2) {
+            int pc2 = pivot_col[r2];
+            num -= M[r][pc2] * kernel[pc2];
+        }
+        // kernel[pc] = num / M[r][pc]  — but we need integers
+        // So we'll first compute in rationals, then clear denominators
+        kernel[pc] = num;
+        // Actually, let's just store (num, denom) and clear later
+    }
+    // The above doesn't handle denominators properly. Let's use a cleaner approach:
+    // Scale everything so kernel[free_col] = product of all pivot diagonal entries
+    mpz_class scale = 1;
+    for (int r = 0; r < rank; ++r) scale *= M[r][pivot_col[r]];
+
+    kernel[free_col] = scale;
+    for (int r = rank - 1; r >= 0; --r) {
+        int pc = pivot_col[r];
+        mpz_class rhs = -M[r][free_col] * scale;
+        for (int c = 0; c < ncols; ++c) {
+            if (c != pc && c != free_col && kernel[c] != 0)
+                rhs -= M[r][c] * kernel[c];
+        }
+        mpz_class diag = M[r][pc];
+        mpz_divexact(kernel[pc].get_mpz_t(), rhs.get_mpz_t(), diag.get_mpz_t());
+    }
+
+    // Remove content
+    mpz_class g = 0;
+    for (int j = 0; j < ncols; ++j) {
+        if (kernel[j] != 0) {
+            if (g == 0) g = abs(kernel[j]);
+            else mpz_gcd(g.get_mpz_t(), g.get_mpz_t(), kernel[j].get_mpz_t());
+        }
+    }
+    if (g > 1) {
+        for (int j = 0; j < ncols; ++j)
+            if (kernel[j] != 0)
+                mpz_divexact(kernel[j].get_mpz_t(), kernel[j].get_mpz_t(), g.get_mpz_t());
+    }
+    // Make leading nonzero positive
+    for (int j = 0; j < ncols; ++j) {
+        if (kernel[j] != 0) {
+            if (kernel[j] < 0) {
+                for (int k = 0; k < ncols; ++k) kernel[k] = -kernel[k];
+            }
+            break;
+        }
+    }
+
+    /* ---- Step F: build result polynomial ---- */
+    WPoly res;
+    int nterms = 0;
+    for (int j = 0; j < ncols; ++j) {
+        if (kernel[j] == 0) continue;
+        Mono m(NUM_VARS, 0);
+        m[VAR_X0] = monoms[j].a;
+        m[VAR_X1] = monoms[j].b;
+        m[VAR_X2] = monoms[j].c;
+        m[VAR_X3] = monoms[j].d;
+        res.add_term(m, kernel[j]);
+        ++nterms;
+    }
+    std::cout << "  Result: " << nterms << " terms\n";
+
+    // Verify weighted homogeneity
+    bool is_wh = true;
+    int wdeg = -1;
+    for (const auto& [m, c] : res.terms) {
+        int wd = 0;
+        for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+        if (wdeg < 0) wdeg = wd;
+        else if (wd != wdeg) { is_wh = false; break; }
+    }
+    std::cout << "  Weighted homogeneous: " << (is_wh ? "YES" : "NO")
+              << ", degree " << wdeg << "\n";
+
+    // Verify at test points from parametrisation
+    std::cout << "  Verification at parametrisation test points:\n";
+    auto eval_param = [](int t1, int t2) -> std::vector<mpz_class> {
+        mpz_class x0 = -120 - 8*t1;
+        mpz_class x1 = (mpz_class)t1*t1 - 126*t1 + 12*t2 + 405;
+        mpz_class x2 = -3*(mpz_class)t1*t1*t1 + 53*(mpz_class)t1*t1
+                        - 20*(mpz_class)t1*t2 + 2583*t1 - 12*t2 - 14985;
+        mpz_class inn = -(mpz_class)t1*t1 - 18*t1 + 4*t2 + 27;
+        mpz_class x3 = -2 * inn * inn;
+        return {x0, x1, x2, x3};
     };
-
-    UniS G2u = compress_even(G2s, "G2");
-    UniS G3u = compress_even(G3s, "G3");
-    int du2 = unis_degree(G2u), du3 = unis_degree(G3u);
-    std::cout << "  After u=s^2 compression: G2 deg " << du2
-              << ", G3 deg " << du3
-              << " -> Sylvester " << (du2+du3) << "x" << (du2+du3) << "\n";
-
-    WPoly res = resultant_sylvester(G2u, G3u);
-    remove_content(res);
-
-    if (!res.is_zero()) {
-        std::cout << "  Raw resultant: " << res.nnz() << " terms\n";
-
-        // Should be weighted homogeneous since inputs are
-        int wdeg = -1;
-        bool is_wh = true;
+    int test_pts[][2] = {{0,0},{1,0},{0,1},{1,1},{-1,2},{3,-1},{10,5},{-7,3}};
+    bool all_ok = true;
+    for (auto& pt : test_pts) {
+        auto xv = eval_param(pt[0], pt[1]);
+        mpz_class val = 0;
         for (const auto& [m, c] : res.terms) {
-            int wd = 0;
-            for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
-            if (wdeg < 0) wdeg = wd;
-            else if (wd != wdeg) { is_wh = false; break; }
+            mpz_class term = c;
+            for (int v = VAR_X0; v <= VAR_X3; ++v) {
+                int e = m[v];
+                int xi = v - VAR_X0;
+                for (int k = 0; k < e; ++k) term *= xv[xi];
+            }
+            val += term;
         }
-        std::cout << "  Weighted homogeneous: " << (is_wh ? "YES" : "NO")
-                  << ", degree " << wdeg << "\n";
+        bool ok = (val == 0);
+        if (!ok) all_ok = false;
+        std::cout << "    (t1,t2)=(" << pt[0] << "," << pt[1]
+                  << ") -> F = " << val << " [" << (ok ? "OK" : "FAIL") << "]\n";
+    }
+    std::cout << "  All tests: " << (all_ok ? "PASS" : "FAIL") << "\n";
+
+    // Print terms
+    std::cout << "  Polynomial terms:\n";
+    for (const auto& [m, c] : res.terms) {
+        std::cout << "    ";
+        if (c > 0) std::cout << "+";
+        std::cout << c;
+        if (m[VAR_X0] > 0) std::cout << "*x0^" << m[VAR_X0];
+        if (m[VAR_X1] > 0) std::cout << "*x1^" << m[VAR_X1];
+        if (m[VAR_X2] > 0) std::cout << "*x2^" << m[VAR_X2];
+        if (m[VAR_X3] > 0) std::cout << "*x3^" << m[VAR_X3];
+        std::cout << "\n";
     }
 
     std::vector<WPoly> result;
