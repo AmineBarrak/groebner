@@ -18,13 +18,18 @@
 #SBATCH --time=0-01:00:00
 #SBATCH --gres=gpu:1
 
-# -- Load exact Matilda modules -----------------------------------------
+# -- Load Matilda modules -----------------------------------------------
+# OpenMPI/4.1.1-cuda12.1 forces gcc/10.2.0 (its build dependency).
+# gcc 10.2 is fine: supports C++17 and is compatible with CUDA 12.1.
+# Load order matters: CUDA/12.1 first, then the CUDA-aware OpenMPI.
 module purge
-module load gcc/13.1.0
 module load CUDA/12.1
-module load OpenMPI/4.1.1c
+module load OpenMPI/4.1.1-cuda12.1
 module load cmake-gcc/3.31.7
 module load gmp/6.1.2
+
+echo "CUDA_HOME=${CUDA_HOME:-not set}"
+echo "nvcc path: $(which nvcc 2>/dev/null)"
 
 # -- Environment --------------------------------------------------------
 cd ${SLURM_SUBMIT_DIR}
@@ -43,14 +48,29 @@ echo "NVCC:   $(nvcc --version 2>/dev/null | tail -1)"
 echo "CMake:  $(cmake --version 2>/dev/null | head -1)"
 echo ""
 
-# -- Build --------------------------------------------------------------
+# -- Verify modules loaded correctly -------------------------------------
+NVCC_VER=$(nvcc --version 2>/dev/null | grep "release" | awk '{print $5}' | tr -d ',')
+if [[ "$NVCC_VER" != 12.* ]]; then
+    echo "ERROR: Expected CUDA 12.x but got nvcc version: $NVCC_VER"
+    echo "Module loading failed. Check module dependencies."
+    exit 1
+fi
+
+# -- Build (clean rebuild to avoid stale cmake cache) -------------------
+echo "=== Building ==="
+rm -rf build
+cmake -B build \
+    -DCMAKE_CUDA_ARCHITECTURES=70 \
+    -DCMAKE_C_COMPILER=gcc \
+    -DCMAKE_CXX_COMPILER=g++ \
+    -DCMAKE_CUDA_HOST_COMPILER=g++ \
+    -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j8
+echo ""
+
 if [ ! -f build/l2_pipeline ]; then
-    echo "=== Building ==="
-    cmake -B build \
-        -DCMAKE_CUDA_ARCHITECTURES=70 \
-        -DCMAKE_BUILD_TYPE=Release
-    cmake --build build -j8
-    echo ""
+    echo "ERROR: Build failed, executable not found."
+    exit 1
 fi
 
 # -- Run ----------------------------------------------------------------
