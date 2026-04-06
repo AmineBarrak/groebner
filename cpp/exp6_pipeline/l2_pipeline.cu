@@ -515,96 +515,131 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
     return det;
 }
 
+/* Convert a WPoly to univariate in t1 by grouping by t1-exponent.
+ * Returns UniT1[i] = coefficient of t1^i (a polynomial in the other vars). */
+using UniT1 = std::vector<WPoly>;
+
+static UniT1 to_uni_t1(const WPoly& f) {
+    int max_t1 = 0;
+    for (const auto& [m, c] : f.terms)
+        max_t1 = std::max(max_t1, m[VAR_T1]);
+    UniT1 result(max_t1 + 1);
+    for (const auto& [m, c] : f.terms) {
+        Mono nm = m;
+        nm[VAR_T1] = 0;  // strip t1 from monomial
+        result[m[VAR_T1]].add_term(nm, c);
+    }
+    return result;
+}
+
+static int uni_degree(const UniT1& p) {
+    for (int i = (int)p.size() - 1; i >= 0; --i)
+        if (!p[i].is_zero()) return i;
+    return -1;
+}
+
 static std::vector<WPoly> stage2_elimination(
-    const std::vector<WPoly>& hom_gens, double& time_ms)
+    const std::vector<WPoly>& /*hom_gens*/, double& time_ms)
 {
     auto t0 = Clock::now();
 
-    std::cout << "  Strategy: substitution + resultant (not naive Buchberger)\n";
+    std::cout << "  Strategy: eliminate t2 via F1, then resultant in t1\n";
 
-    // Step 2a: From F0_hom, solve for t1
-    // F0_hom: s*x0 + 120*s + 8*t1 = 0  =>  t1 = -s*(x0+120)/8
-    std::cout << "  Step 2a: Solving F0_hom for t1\n";
+    // Use AFFINE generators (no homogenization needed for this approach)
+    std::vector<WPoly> gens = build_l2_affine_generators();
+    WPoly& F1 = gens[1];
+    WPoly& F2 = gens[2];
+    WPoly& F3 = gens[3];
 
-    // Step 2b: Substitute t1 into F1_hom, F2_hom, F3_hom
-    std::cout << "  Step 2b: Substituting t1 into F1, F2, F3\n";
-
-    // Compute max t1 degree in each generator (for denominator clearing)
-    auto get_max_t1 = [](const WPoly& f) {
-        int mx = 0;
-        for (const auto& [m, _] : f.terms) mx = std::max(mx, m[VAR_T1]);
-        return mx;
-    };
-    int max_t1_F1 = get_max_t1(hom_gens[1]);
-    int max_t1_F2 = get_max_t1(hom_gens[2]);
-    int max_t1_F3 = get_max_t1(hom_gens[3]);
-    std::cout << "  Max t1 degrees: F1=" << max_t1_F1
-              << " F2=" << max_t1_F2 << " F3=" << max_t1_F3 << "\n";
-    WPoly F1_sub = substitute_t1(hom_gens[1], max_t1_F1);
-    WPoly F2_sub = substitute_t1(hom_gens[2], max_t1_F2);
-    WPoly F3_sub = substitute_t1(hom_gens[3], max_t1_F3);
-
-    std::cout << "  F1 after t1-sub: " << F1_sub.nnz() << " terms\n";
-    std::cout << "  F2 after t1-sub: " << F2_sub.nnz() << " terms\n";
-    std::cout << "  F3 after t1-sub: " << F3_sub.nnz() << " terms\n";
-
-    // Step 2c: From F1_sub, extract coefficient of t2 and remainder
-    // F1_sub should be linear in t2: coef_t2 * t2 + remainder = 0
+    // Step A: From F1, extract t2 coefficient and remainder
+    // F1 = x1 - t1^2 + 126*t1 - 12*t2 - 405
+    // F1 is linear in t2: coef_t2 * t2 + remainder(t1, x1) = 0
     WPoly t2_coef, t2_rem;
-    for (const auto& [m, c] : F1_sub.terms) {
+    for (const auto& [m, c] : F1.terms) {
         if (m[VAR_T2] == 1) {
             Mono nm = m; nm[VAR_T2] = 0;
             t2_coef.add_term(nm, c);
         } else if (m[VAR_T2] == 0) {
             t2_rem.add_term(m, c);
         } else {
-            std::cout << "  WARNING: F1_sub has t2^" << m[VAR_T2] << " (expected linear)\n";
+            std::cout << "  WARNING: F1 has t2^" << m[VAR_T2] << " (expected linear)\n";
         }
     }
-    std::cout << "  t2 coefficient: " << t2_coef.nnz() << " terms\n";
-    std::cout << "  t2 remainder: " << t2_rem.nnz() << " terms\n";
+    std::cout << "  F1 t2 coefficient: " << t2_coef.nnz() << " terms (should be -12)\n";
+    std::cout << "  F1 t2 remainder:   " << t2_rem.nnz() << " terms\n";
 
-    // Step 2d: Substitute t2 into F2_sub, F3_sub
-    std::cout << "  Step 2c: Substituting t2 into F2, F3\n";
-    WPoly G2 = substitute_t2(F2_sub, t2_coef, t2_rem);
-    WPoly G3 = substitute_t2(F3_sub, t2_coef, t2_rem);
+    // Step B: Substitute t2 into F2 and F3 using F1's relation
+    // t2 = -remainder/coef, cleared by multiplying by coef^max_t2
+    std::cout << "  Step B: Substituting t2 into F2, F3\n";
+    WPoly F2p = substitute_t2(F2, t2_coef, t2_rem);
+    WPoly F3p = substitute_t2(F3, t2_coef, t2_rem);
 
-    std::cout << "  G2 (in s, x0..x3): " << G2.nnz() << " terms\n";
-    std::cout << "  G3 (in s, x0..x3): " << G3.nnz() << " terms\n";
+    std::cout << "  F2' (in t1, x0..x3): " << F2p.nnz() << " terms\n";
+    std::cout << "  F3' (in t1, x0..x3): " << F3p.nnz() << " terms\n";
 
-    // Step 2e: Convert to univariate in s, compute resultant
-    std::cout << "  Step 2d: Computing resultant to eliminate s\n";
-    UniS G2_s = to_unis(G2);
-    UniS G3_s = to_unis(G3);
-    std::cout << "  G2 degree in s: " << unis_degree(G2_s) << "\n";
-    std::cout << "  G3 degree in s: " << unis_degree(G3_s) << "\n";
+    // Verify no t2 remains
+    for (const auto& [m, _] : F2p.terms)
+        if (m[VAR_T2] > 0) { std::cout << "  BUG: F2' still has t2!\n"; break; }
+    for (const auto& [m, _] : F3p.terms)
+        if (m[VAR_T2] > 0) { std::cout << "  BUG: F3' still has t2!\n"; break; }
+    // Also verify no s (affine, should be none)
+    for (const auto& [m, _] : F2p.terms)
+        if (m[VAR_S] > 0) { std::cout << "  BUG: F2' has s!\n"; break; }
 
-    // Strip common factor of s from G2 and G3.
-    // Denominator clearing (by powers of 8 and t2_coef) introduces s-factors
-    // that make the resultant trivially zero.
-    auto strip_s_factor = [](UniS& p) -> int {
-        int shift = 0;
-        while (shift < (int)p.size() && p[shift].is_zero()) ++shift;
-        if (shift > 0) {
-            UniS trimmed(p.begin() + shift, p.end());
-            p = std::move(trimmed);
-        }
-        return shift;
-    };
-    int s_pow_g2 = strip_s_factor(G2_s);
-    int s_pow_g3 = strip_s_factor(G3_s);
-    if (s_pow_g2 > 0 || s_pow_g3 > 0) {
-        std::cout << "  Stripped s^" << s_pow_g2 << " from G2, s^"
-                  << s_pow_g3 << " from G3\n";
-        std::cout << "  G2 effective degree in s: " << unis_degree(G2_s) << "\n";
-        std::cout << "  G3 effective degree in s: " << unis_degree(G3_s) << "\n";
-    }
+    // Step C: Convert to univariate in t1
+    UniT1 F2t = to_uni_t1(F2p);
+    UniT1 F3t = to_uni_t1(F3p);
+    int d2 = uni_degree(F2t);
+    int d3 = uni_degree(F3t);
+    std::cout << "  F2' degree in t1: " << d2 << "\n";
+    std::cout << "  F3' degree in t1: " << d3 << "\n";
+    std::cout << "  Sylvester matrix will be " << (d2+d3) << "x" << (d2+d3) << "\n";
 
-    WPoly res = resultant_sylvester(G2_s, G3_s);
+    // Print coefficient sizes
+    for (int i = 0; i <= d2; ++i)
+        std::cout << "    F2'[t1^" << i << "]: " << F2t[i].nnz() << " terms\n";
+    for (int i = 0; i <= d3; ++i)
+        std::cout << "    F3'[t1^" << i << "]: " << F3t[i].nnz() << " terms\n";
 
-    // The resultant may have a power of x0 or other variable as a factor.
-    // Extract the irreducible factor (the degree-30 polynomial).
+    // Step D: Compute resultant via Sylvester matrix + Bareiss
+    std::cout << "  Step D: Computing resultant to eliminate t1\n";
+    WPoly res = resultant_sylvester(F2t, F3t);
+
+    // The result is in k[x0, x1, x2, x3] — the implicit equation (or a multiple)
     remove_content(res);
+
+    // Check for extraneous factors: if not weighted homogeneous, extract the
+    // weighted-homogeneous component of degree 30
+    if (!res.is_zero()) {
+        std::cout << "  Raw resultant: " << res.nnz() << " terms, wdeg="
+                  << res.weighted_degree() << "\n";
+
+        // Check if weighted homogeneous
+        int wdeg = -1;
+        bool is_wh = true;
+        for (const auto& [m, c] : res.terms) {
+            int wd = 0;
+            for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+            if (wdeg < 0) wdeg = wd;
+            else if (wd != wdeg) { is_wh = false; break; }
+        }
+        if (is_wh) {
+            std::cout << "  Result IS weighted homogeneous of degree " << wdeg << "\n";
+        } else {
+            std::cout << "  Result is NOT weighted homogeneous — extracting degree-30 component\n";
+            WPoly wh30;
+            for (const auto& [m, c] : res.terms) {
+                int wd = 0;
+                for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+                if (wd == 30) wh30.add_term(m, c);
+            }
+            if (!wh30.is_zero()) {
+                remove_content(wh30);
+                std::cout << "  Degree-30 component: " << wh30.nnz() << " terms\n";
+                res = std::move(wh30);
+            }
+        }
+    }
 
     std::vector<WPoly> result;
     if (!res.is_zero()) {
@@ -859,7 +894,7 @@ int main(int argc, char** argv) {
     MPI_Barrier(MPI_COMM_WORLD);
 
     // === Stage 2 (rank 0 only, has GPU) ===
-    if (rank == 0) std::cout << "=== STAGE 2: Buchberger/F4 Elimination (CUDA) ===\n";
+    if (rank == 0) std::cout << "=== STAGE 2: Substitution + Resultant Elimination ===\n";
     std::vector<WPoly> elim_ideal;
     if (rank == 0) {
         elim_ideal = stage2_elimination(hom_gens, t2_ms);
