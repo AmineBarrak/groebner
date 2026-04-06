@@ -696,7 +696,36 @@ static std::vector<WPoly> stage2_elimination(
         std::cout << "  Effective Sylvester: " << (d2+d3) << "x" << (d2+d3) << "\n";
     }
 
-    WPoly res = resultant_sylvester(G2s, G3s);
+    // ---- u = s^2 compression ----
+    // All weights (2,4,6,10) are even, so weighted homogenization only produces
+    // even powers of s.  Substitute u = s^2 to get a dense Sylvester matrix.
+    // G2s[k] is the coefficient of s^k; after compression G2u[j] = G2s[2j].
+    auto compress_even = [](const UniS& p, const char* name) -> UniS {
+        // Verify: all odd-indexed entries should be zero
+        for (int i = 1; i < (int)p.size(); i += 2) {
+            if (!p[i].is_zero()) {
+                std::cout << "  WARNING: " << name << "[" << i
+                          << "] has " << p[i].nnz() << " terms (expected 0)\n";
+            }
+        }
+        // Extract even-indexed entries
+        int new_deg = ((int)p.size() - 1) / 2;
+        UniS result(new_deg + 1);
+        for (int j = 0; j <= new_deg; ++j) {
+            int src = 2 * j;
+            if (src < (int)p.size()) result[j] = p[src];
+        }
+        return result;
+    };
+
+    UniS G2u = compress_even(G2s, "G2");
+    UniS G3u = compress_even(G3s, "G3");
+    int du2 = unis_degree(G2u), du3 = unis_degree(G3u);
+    std::cout << "  After u=s^2 compression: G2 deg " << du2
+              << ", G3 deg " << du3
+              << " -> Sylvester " << (du2+du3) << "x" << (du2+du3) << "\n";
+
+    WPoly res = resultant_sylvester(G2u, G3u);
     remove_content(res);
 
     if (!res.is_zero()) {
