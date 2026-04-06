@@ -208,16 +208,23 @@ inline WPoly reduce_z(WPoly p, const std::vector<WPoly>& basis) {
 /* Given that a divides b exactly (remainder = 0), compute b/a.
  * Uses repeated leading-term division. Asserts exactness. */
 inline WPoly wpoly_exact_div(const WPoly& b, const WPoly& a) {
-    assert(!a.is_zero());
+    if (a.is_zero()) {
+        std::cerr << "wpoly_exact_div: division by zero polynomial!\n";
+        return WPoly();
+    }
+    if (b.is_zero()) return WPoly();
+
     WPoly remainder = b;
     WPoly quotient;
-    const Mono& a_lm = a.LM();
-    const mpz_class& a_lc = a.LC();
+    // Copy leading term info (avoid dangling references)
+    Mono a_lm = a.LM();
+    mpz_class a_lc = a.LC();
 
-    int safety = 100000;
+    int safety = (int)b.nnz() * 100 + 1000;
     while (!remainder.is_zero() && safety-- > 0) {
-        const Mono& r_lm = remainder.LM();
-        const mpz_class& r_lc = remainder.LC();
+        // Copy (not reference) to avoid iterator invalidation
+        Mono r_lm = remainder.LM();
+        mpz_class r_lc = remainder.LC();
 
         // Check leading monomial divisibility
         bool div_ok = true;
@@ -228,21 +235,30 @@ inline WPoly wpoly_exact_div(const WPoly& b, const WPoly& a) {
         }
 
         if (!div_ok) {
-            // Not exactly divisible — this shouldn't happen in Bareiss
-            std::cerr << "wpoly_exact_div: not divisible! remainder has "
-                      << remainder.nnz() << " terms\n";
-            break;
+            std::cerr << "wpoly_exact_div: LT not divisible! remainder "
+                      << remainder.nnz() << " terms, divisor "
+                      << a.nnz() << " terms\n";
+            return quotient;  // return partial result instead of crashing
         }
 
         // Coefficient must divide exactly
         mpz_class qc;
         mpz_tdiv_q(qc.get_mpz_t(), r_lc.get_mpz_t(), a_lc.get_mpz_t());
 
+        if (qc == 0) {
+            std::cerr << "wpoly_exact_div: zero quotient coefficient!\n";
+            return quotient;
+        }
+
         quotient.add_term(qm, qc);
 
         // remainder -= qc * x^qm * a
         WPoly sub = wpoly_mul_mono(a, qm, qc);
         remainder = wpoly_sub(remainder, sub);
+    }
+    if (safety <= 0) {
+        std::cerr << "wpoly_exact_div: safety limit reached, remainder "
+                  << remainder.nnz() << " terms\n";
     }
     return quotient;
 }

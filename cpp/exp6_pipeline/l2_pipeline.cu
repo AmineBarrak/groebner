@@ -410,6 +410,7 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
     // At each step k, M[i][j] = (M[i][j]*M[k][k] - M[i][k]*M[k][j]) / prev_pivot
     WPoly prev_pivot;
     prev_pivot.add_term(mono_zero(), 1);
+    int swap_sign = 1;  // track sign from row swaps
 
     for (int k = 0; k < N - 1; ++k) {
         std::cout << "  Bareiss step " << k + 1 << "/" << N - 1
@@ -421,9 +422,7 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
             for (int r = k + 1; r < N; ++r) {
                 if (!M[r][k].is_zero()) {
                     std::swap(M[k], M[r]);
-                    // Swap changes sign of determinant — negate a row to compensate
-                    for (int j = k; j < N; ++j)
-                        M[k][j] = wpoly_scale(M[k][j], -1);
+                    swap_sign *= -1;  // track sign, don't modify entries
                     found = true;
                     break;
                 }
@@ -493,8 +492,9 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
     }
     std::cout << "\n";
 
-    // Determinant is M[N-1][N-1]
+    // Determinant is M[N-1][N-1], adjusted for row swap sign
     WPoly det = M[N - 1][N - 1];
+    if (swap_sign < 0) det = wpoly_scale(det, -1);
     remove_content(det);
     std::cout << "  Resultant: " << det.nnz() << " terms, wdeg="
               << det.weighted_degree() << "\n";
