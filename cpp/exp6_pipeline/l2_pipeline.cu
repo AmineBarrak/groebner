@@ -538,83 +538,171 @@ static int uni_degree(const UniT1& p) {
     return -1;
 }
 
+/* Substitute t1 = -(x0+120)/8 in an AFFINE polynomial.
+ * Clears denominators by 8^max_t1.  Result is in k[t2, x0, ...]. */
+static WPoly substitute_t1_affine(const WPoly& f) {
+    int max_t1 = 0;
+    for (const auto& [m, _] : f.terms) max_t1 = std::max(max_t1, m[VAR_T1]);
+    if (max_t1 == 0) return f;  // no t1
+
+    // Precompute (x0+120)^k
+    std::vector<WPoly> xp_pow(max_t1 + 1);
+    xp_pow[0].add_term(mono_zero(), 1);
+    if (max_t1 >= 1) {
+        xp_pow[1].add_term(mono_var(VAR_X0), 1);
+        xp_pow[1].add_term(mono_zero(), 120);
+    }
+    for (int k = 2; k <= max_t1; ++k) {
+        for (const auto& [ma, ca] : xp_pow[k-1].terms) {
+            Mono mx = ma; mx[VAR_X0] += 1;
+            xp_pow[k].add_term(mx, ca);
+            xp_pow[k].add_term(ma, ca * 120);
+        }
+    }
+
+    WPoly result;
+    for (const auto& [m, c] : f.terms) {
+        int a = m[VAR_T1];
+        // t1^a → (-(x0+120)/8)^a = (-1)^a (x0+120)^a / 8^a
+        // Clear by 8^max_t1: multiply by 8^{max_t1-a}
+        mpz_class eight_pow;
+        mpz_ui_pow_ui(eight_pow.get_mpz_t(), 8, max_t1 - a);
+        mpz_class sign = (a % 2 == 0) ? mpz_class(1) : mpz_class(-1);
+        mpz_class scalar = c * sign * eight_pow;
+
+        for (const auto& [mp, cp] : xp_pow[a].terms) {
+            Mono nm = m;
+            nm[VAR_T1] = 0;
+            for (int v = 0; v < NUM_VARS; ++v) nm[v] += mp[v];
+            result.add_term(nm, scalar * cp);
+        }
+    }
+    remove_content(result);
+    return result;
+}
+
+/* Weighted-homogenize a polynomial in k[x0,..,x3] by introducing s.
+ * Each term gets s^{D - wd} where wd is its weighted degree and D = max wd. */
+static WPoly weighted_homogenize_xs(const WPoly& f) {
+    int D = 0;
+    for (const auto& [m, c] : f.terms) {
+        int wd = 0;
+        for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+        D = std::max(D, wd);
+    }
+    WPoly result;
+    for (const auto& [m, c] : f.terms) {
+        int wd = 0;
+        for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+        Mono nm = m;
+        nm[VAR_S] = D - wd;
+        result.add_term(nm, c);
+    }
+    return result;
+}
+
 static std::vector<WPoly> stage2_elimination(
     const std::vector<WPoly>& /*hom_gens*/, double& time_ms)
 {
     auto t0 = Clock::now();
 
-    std::cout << "  Strategy: eliminate t2 via F1, then resultant in t1\n";
+    std::cout << "  Strategy: affine substitution chain + weighted homogenize + resultant in s\n";
 
-    // Use AFFINE generators (no homogenization needed for this approach)
+    // Use AFFINE generators
     std::vector<WPoly> gens = build_l2_affine_generators();
-    WPoly& F1 = gens[1];
-    WPoly& F2 = gens[2];
-    WPoly& F3 = gens[3];
 
-    // Step A: From F1, extract t2 coefficient and remainder
-    // F1 = x1 - t1^2 + 126*t1 - 12*t2 - 405
-    // F1 is linear in t2: coef_t2 * t2 + remainder(t1, x1) = 0
+    // Step A: From F0, substitute t1 = -(x0+120)/8 into F1, F2, F3
+    std::cout << "  Step A: Substituting t1 from F0 into F1, F2, F3\n";
+    WPoly F1p = substitute_t1_affine(gens[1]);
+    WPoly F2p = substitute_t1_affine(gens[2]);
+    WPoly F3p = substitute_t1_affine(gens[3]);
+    std::cout << "  F1' (in t2, x0, x1): " << F1p.nnz() << " terms\n";
+    std::cout << "  F2' (in t2, x0, x2): " << F2p.nnz() << " terms\n";
+    std::cout << "  F3' (in t2, x0, x3): " << F3p.nnz() << " terms\n";
+
+    // Step B: From F1', extract t2 coefficient and remainder, substitute into F2', F3'
     WPoly t2_coef, t2_rem;
-    for (const auto& [m, c] : F1.terms) {
+    for (const auto& [m, c] : F1p.terms) {
         if (m[VAR_T2] == 1) {
             Mono nm = m; nm[VAR_T2] = 0;
             t2_coef.add_term(nm, c);
         } else if (m[VAR_T2] == 0) {
             t2_rem.add_term(m, c);
         } else {
-            std::cout << "  WARNING: F1 has t2^" << m[VAR_T2] << " (expected linear)\n";
+            std::cout << "  WARNING: F1' has t2^" << m[VAR_T2] << "\n";
         }
     }
-    std::cout << "  F1 t2 coefficient: " << t2_coef.nnz() << " terms (should be -12)\n";
-    std::cout << "  F1 t2 remainder:   " << t2_rem.nnz() << " terms\n";
+    std::cout << "  t2 coef: " << t2_coef.nnz() << " terms, remainder: " << t2_rem.nnz() << " terms\n";
 
-    // Step B: Substitute t2 into F2 and F3 using F1's relation
-    // t2 = -remainder/coef, cleared by multiplying by coef^max_t2
-    std::cout << "  Step B: Substituting t2 into F2, F3\n";
-    WPoly F2p = substitute_t2(F2, t2_coef, t2_rem);
-    WPoly F3p = substitute_t2(F3, t2_coef, t2_rem);
+    std::cout << "  Step B: Substituting t2 into F2', F3'\n";
+    WPoly G2 = substitute_t2(F2p, t2_coef, t2_rem);
+    WPoly G3 = substitute_t2(F3p, t2_coef, t2_rem);
+    std::cout << "  G2 (x0,x1,x2): " << G2.nnz() << " terms\n";
+    std::cout << "  G3 (x0,x1,x3): " << G3.nnz() << " terms\n";
 
-    std::cout << "  F2' (in t1, x0..x3): " << F2p.nnz() << " terms\n";
-    std::cout << "  F3' (in t1, x0..x3): " << F3p.nnz() << " terms\n";
+    // Verify: only x-variables remain
+    for (const auto& [m, _] : G2.terms) {
+        if (m[VAR_S]>0||m[VAR_T1]>0||m[VAR_T2]>0)
+        { std::cout << "  BUG: G2 has s/t1/t2!\n"; break; }
+    }
+    for (const auto& [m, _] : G3.terms) {
+        if (m[VAR_S]>0||m[VAR_T1]>0||m[VAR_T2]>0)
+        { std::cout << "  BUG: G3 has s/t1/t2!\n"; break; }
+    }
 
-    // Verify no t2 remains
-    for (const auto& [m, _] : F2p.terms)
-        if (m[VAR_T2] > 0) { std::cout << "  BUG: F2' still has t2!\n"; break; }
-    for (const auto& [m, _] : F3p.terms)
-        if (m[VAR_T2] > 0) { std::cout << "  BUG: F3' still has t2!\n"; break; }
-    // Also verify no s (affine, should be none)
-    for (const auto& [m, _] : F2p.terms)
-        if (m[VAR_S] > 0) { std::cout << "  BUG: F2' has s!\n"; break; }
+    // Print weighted degree info
+    auto print_wdeg_range = [](const char* name, const WPoly& p) {
+        int lo = INT_MAX, hi = 0;
+        for (const auto& [m, _] : p.terms) {
+            int wd = 0;
+            for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
+            lo = std::min(lo, wd);
+            hi = std::max(hi, wd);
+        }
+        std::cout << "  " << name << " weighted degree range: [" << lo << ", " << hi << "]\n";
+    };
+    print_wdeg_range("G2", G2);
+    print_wdeg_range("G3", G3);
 
-    // Step C: Convert to univariate in t1
-    UniT1 F2t = to_uni_t1(F2p);
-    UniT1 F3t = to_uni_t1(F3p);
-    int d2 = uni_degree(F2t);
-    int d3 = uni_degree(F3t);
-    std::cout << "  F2' degree in t1: " << d2 << "\n";
-    std::cout << "  F3' degree in t1: " << d3 << "\n";
+    // Step C: Weighted-homogenize G2 and G3 (introduce s with deg(s)=1)
+    std::cout << "  Step C: Weighted homogenization\n";
+    WPoly G2_wh = weighted_homogenize_xs(G2);
+    WPoly G3_wh = weighted_homogenize_xs(G3);
+    std::cout << "  G2_wh: " << G2_wh.nnz() << " terms\n";
+    std::cout << "  G3_wh: " << G3_wh.nnz() << " terms\n";
+
+    // Step D: Convert to univariate in s, compute resultant
+    std::cout << "  Step D: Computing resultant in s\n";
+    UniS G2s = to_unis(G2_wh);
+    UniS G3s = to_unis(G3_wh);
+    int d2 = unis_degree(G2s);
+    int d3 = unis_degree(G3s);
+    std::cout << "  G2_wh degree in s: " << d2 << "\n";
+    std::cout << "  G3_wh degree in s: " << d3 << "\n";
     std::cout << "  Sylvester matrix will be " << (d2+d3) << "x" << (d2+d3) << "\n";
 
-    // Print coefficient sizes
-    for (int i = 0; i <= d2; ++i)
-        std::cout << "    F2'[t1^" << i << "]: " << F2t[i].nnz() << " terms\n";
-    for (int i = 0; i <= d3; ++i)
-        std::cout << "    F3'[t1^" << i << "]: " << F3t[i].nnz() << " terms\n";
+    // Strip common s factor
+    auto strip_s = [](UniS& p) -> int {
+        int shift = 0;
+        while (shift < (int)p.size() && p[shift].is_zero()) ++shift;
+        if (shift > 0) p = UniS(p.begin() + shift, p.end());
+        return shift;
+    };
+    int s2 = strip_s(G2s), s3 = strip_s(G3s);
+    if (s2 > 0 || s3 > 0) {
+        std::cout << "  Stripped s^" << s2 << " from G2, s^" << s3 << " from G3\n";
+        d2 = unis_degree(G2s); d3 = unis_degree(G3s);
+        std::cout << "  Effective degrees: G2=" << d2 << " G3=" << d3 << "\n";
+        std::cout << "  Effective Sylvester: " << (d2+d3) << "x" << (d2+d3) << "\n";
+    }
 
-    // Step D: Compute resultant via Sylvester matrix + Bareiss
-    std::cout << "  Step D: Computing resultant to eliminate t1\n";
-    WPoly res = resultant_sylvester(F2t, F3t);
-
-    // The result is in k[x0, x1, x2, x3] — the implicit equation (or a multiple)
+    WPoly res = resultant_sylvester(G2s, G3s);
     remove_content(res);
 
-    // Check for extraneous factors: if not weighted homogeneous, extract the
-    // weighted-homogeneous component of degree 30
     if (!res.is_zero()) {
-        std::cout << "  Raw resultant: " << res.nnz() << " terms, wdeg="
-                  << res.weighted_degree() << "\n";
+        std::cout << "  Raw resultant: " << res.nnz() << " terms\n";
 
-        // Check if weighted homogeneous
+        // Should be weighted homogeneous since inputs are
         int wdeg = -1;
         bool is_wh = true;
         for (const auto& [m, c] : res.terms) {
@@ -623,22 +711,8 @@ static std::vector<WPoly> stage2_elimination(
             if (wdeg < 0) wdeg = wd;
             else if (wd != wdeg) { is_wh = false; break; }
         }
-        if (is_wh) {
-            std::cout << "  Result IS weighted homogeneous of degree " << wdeg << "\n";
-        } else {
-            std::cout << "  Result is NOT weighted homogeneous — extracting degree-30 component\n";
-            WPoly wh30;
-            for (const auto& [m, c] : res.terms) {
-                int wd = 0;
-                for (int v = VAR_X0; v <= VAR_X3; ++v) wd += m[v] * WEIGHTS[v];
-                if (wd == 30) wh30.add_term(m, c);
-            }
-            if (!wh30.is_zero()) {
-                remove_content(wh30);
-                std::cout << "  Degree-30 component: " << wh30.nnz() << " terms\n";
-                res = std::move(wh30);
-            }
-        }
+        std::cout << "  Weighted homogeneous: " << (is_wh ? "YES" : "NO")
+                  << ", degree " << wdeg << "\n";
     }
 
     std::vector<WPoly> result;
