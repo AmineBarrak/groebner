@@ -415,11 +415,26 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
         std::cout << "  Bareiss step " << k + 1 << "/" << N - 1
                   << " (pivot: " << M[k][k].nnz() << " terms)\r" << std::flush;
 
-        WPoly pivot = M[k][k];
-        if (pivot.is_zero()) {
-            std::cout << "\n  WARNING: zero pivot at step " << k << "\n";
-            continue;
+        // Partial pivoting: find nonzero pivot in column k
+        if (M[k][k].is_zero()) {
+            bool found = false;
+            for (int r = k + 1; r < N; ++r) {
+                if (!M[r][k].is_zero()) {
+                    std::swap(M[k], M[r]);
+                    // Swap changes sign of determinant — negate a row to compensate
+                    for (int j = k; j < N; ++j)
+                        M[k][j] = wpoly_scale(M[k][j], -1);
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                std::cout << "\n  Column " << k << " all zero — det is 0\n";
+                WPoly zero;
+                return zero;
+            }
         }
+        WPoly pivot = M[k][k];
 
         // Update rows k+1..N-1 (parallelizable with OpenMP)
         #pragma omp parallel for schedule(dynamic)
@@ -549,6 +564,27 @@ static std::vector<WPoly> stage2_elimination(
     UniS G3_s = to_unis(G3);
     std::cout << "  G2 degree in s: " << unis_degree(G2_s) << "\n";
     std::cout << "  G3 degree in s: " << unis_degree(G3_s) << "\n";
+
+    // Strip common factor of s from G2 and G3.
+    // Denominator clearing (by powers of 8 and t2_coef) introduces s-factors
+    // that make the resultant trivially zero.
+    auto strip_s_factor = [](UniS& p) -> int {
+        int shift = 0;
+        while (shift < (int)p.size() && p[shift].is_zero()) ++shift;
+        if (shift > 0) {
+            UniS trimmed(p.begin() + shift, p.end());
+            p = std::move(trimmed);
+        }
+        return shift;
+    };
+    int s_pow_g2 = strip_s_factor(G2_s);
+    int s_pow_g3 = strip_s_factor(G3_s);
+    if (s_pow_g2 > 0 || s_pow_g3 > 0) {
+        std::cout << "  Stripped s^" << s_pow_g2 << " from G2, s^"
+                  << s_pow_g3 << " from G3\n";
+        std::cout << "  G2 effective degree in s: " << unis_degree(G2_s) << "\n";
+        std::cout << "  G3 effective degree in s: " << unis_degree(G3_s) << "\n";
+    }
 
     WPoly res = resultant_sylvester(G2_s, G3_s);
 
