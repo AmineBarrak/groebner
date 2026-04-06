@@ -881,12 +881,14 @@ static std::vector<WPoly> stage2_elimination(
     // Verify at test points from parametrisation
     std::cout << "  Verification at parametrisation test points:\n";
     auto eval_param = [](int t1, int t2) -> std::vector<mpz_class> {
-        mpz_class x0 = -120 - 8*t1;
-        mpz_class x1 = (mpz_class)t1*t1 - 126*t1 + 12*t2 + 405;
-        mpz_class x2 = -3*(mpz_class)t1*t1*t1 + 53*(mpz_class)t1*t1
-                        - 20*(mpz_class)t1*t2 + 2583*t1 - 12*t2 - 14985;
-        mpz_class inn = -(mpz_class)t1*t1 - 18*t1 + 4*t2 + 27;
-        mpz_class x3 = -2 * inn * inn;
+        mpz_class T1(t1), T2(t2);
+        mpz_class x0 = mpz_class(-120) - mpz_class(8)*T1;
+        mpz_class x1 = T1*T1 - mpz_class(126)*T1 + mpz_class(12)*T2 + mpz_class(405);
+        mpz_class x2 = mpz_class(-3)*T1*T1*T1 + mpz_class(53)*T1*T1
+                        - mpz_class(20)*T1*T2 + mpz_class(2583)*T1
+                        - mpz_class(12)*T2 - mpz_class(14985);
+        mpz_class inn = -T1*T1 - mpz_class(18)*T1 + mpz_class(4)*T2 + mpz_class(27);
+        mpz_class x3 = mpz_class(-2) * inn * inn;
         return {x0, x1, x2, x3};
     };
     int test_pts[][2] = {{0,0},{1,0},{0,1},{1,1},{-1,2},{3,-1},{10,5},{-7,3}};
