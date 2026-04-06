@@ -59,7 +59,11 @@ fi
 # -- Build (clean rebuild to avoid stale cmake cache) -------------------
 echo "=== Building ==="
 rm -rf build
-rm -f l2_pipeline_*.out l2_pipeline_*.err
+# Delete old logs but keep the current job's files
+for f in l2_pipeline_*.out l2_pipeline_*.err; do
+    [[ "$f" == *"${SLURM_JOB_ID}"* ]] && continue
+    rm -f "$f"
+done
 cmake -B build \
     -DCMAKE_CUDA_ARCHITECTURES=70 \
     -DCMAKE_C_COMPILER=gcc \
