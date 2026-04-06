@@ -1,0 +1,12 @@
+{
+  "space": "P(1,2,3,4,5)",
+  "p1_time": 0.062,
+  "p1_basis_size": 17,
+  "p1_correct": true,
+  "p2_time": 0.0698,
+  "p2_basis_size": 17,
+  "p2_correct": true,
+  "p4_time": 0.0618,
+  "p4_basis_size": 17,
+  "p4_correct": true
+}

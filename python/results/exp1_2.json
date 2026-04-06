@@ -1,0 +1,74 @@
+[
+  {
+    "total": 2,
+    "homogeneous": 1,
+    "non_homogeneous": 1,
+    "degrees": [
+      2
+    ],
+    "failures": [
+      {
+        "index": 1,
+        "poly": "x1 - x2"
+      }
+    ],
+    "all_pass": false,
+    "name": "P(1,1,2) \u2014 x0=t, x1=t\u00b2, x2=t\u00b2",
+    "passed": false,
+    "basis_size": 2
+  },
+  {
+    "total": 4,
+    "homogeneous": 4,
+    "non_homogeneous": 0,
+    "degrees": [
+      3,
+      4,
+      6,
+      2
+    ],
+    "failures": [],
+    "all_pass": true,
+    "name": "P(1,2,3) \u2014 x0=t, x1=t\u00b2, x2=t\u00b3",
+    "passed": true,
+    "basis_size": 4
+  },
+  {
+    "total": 2,
+    "homogeneous": 1,
+    "non_homogeneous": 1,
+    "degrees": [
+      1
+    ],
+    "failures": [
+      {
+        "index": 0,
+        "poly": "x1**2 - x1 - x2"
+      }
+    ],
+    "all_pass": false,
+    "name": "P(1,1,1) \u2014 twisted",
+    "passed": false,
+    "basis_size": 2
+  },
+  {
+    "total": 2,
+    "homogeneous": 0,
+    "non_homogeneous": 2,
+    "degrees": [],
+    "failures": [
+      {
+        "index": 0,
+        "poly": "x0 - x2**3"
+      },
+      {
+        "index": 1,
+        "poly": "x1 - x2**2"
+      }
+    ],
+    "all_pass": false,
+    "name": "P(2,3,5) \u2014 x0=t\u00b3, x1=t\u00b2, x2=t",
+    "passed": false,
+    "basis_size": 2
+  }
+]

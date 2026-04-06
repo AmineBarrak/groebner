@@ -1,0 +1,730 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 10.0.26200 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      Microsoft (R) C/C++ Optimizing Compiler Version 19.50.35727 for x64
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+      
+      CMakeCXXCompilerId.cpp
+      Microsoft (R) Incremental Linker Version 14.50.35727.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+      
+      /out:CMakeCXXCompilerId.exe 
+      CMakeCXXCompilerId.obj 
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+      
+      The CXX compiler identification is MSVC, found in:
+        C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/3.31.6/CompilerIdCXX/CMakeCXXCompilerId.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1288 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting CXX compiler /showIncludes prefix:
+        main.c
+        Note: including file: C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\ShowIncludes\\foo.h
+        
+      Found prefix "Note: including file: "
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1237 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:75 (CMAKE_DETERMINE_COMPILER_ID_VENDOR)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Checking whether the CUDA compiler is NVIDIA using "" matched "nvcc: NVIDIA \\(R\\) Cuda compiler driver":
+      nvcc: NVIDIA (R) Cuda compiler driver
+      Copyright (c) 2005-2026 NVIDIA Corporation
+      Built on Mon_Mar__2_21:54:11_Pacific_Standard_Time_2026
+      Cuda compilation tools, release 13.2, V13.2.51
+      Build cuda_13.2.r13.2/compiler.37434383_0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:53 (__determine_compiler_id_test)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:131 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CUDA compiler identification source file "CMakeCUDACompilerId.cu" succeeded.
+      Compiler: C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/nvcc.exe 
+      Build flags: 
+      Id flags: --keep;--keep-dir;tmp -v
+      
+      The output was:
+      0
+      #$ PATH=C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\x64;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin;;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Program Files\\dotnet\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2026.1.0\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;c:\\users\\aminebarrak\\.local\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg
+      #$ _NVVM_BRANCH_=nvvm
+      #$ _SPACE_= 
+      #$ _CUDART_=cudart
+      #$ CUDA_ROOT=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin
+      #$ _HERE_=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin
+      #$ _THERE_=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin
+      #$ _TARGET_SIZE_=
+      #$ _TARGET_DIR_=
+      #$ _TARGET_SIZE_=64
+      #$ _WIN_PLATFORM_=x64
+      #$ TOP=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/..
+      #$ CICC_PATH=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../nvvm/bin
+      #$ NVVMIR_LIBRARY_DIR=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../nvvm/libdevice
+      #$ PATH=C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../nvvm/bin;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\x64;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin;;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Program Files\\dotnet\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2026.1.0\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;c:\\users\\aminebarrak\\.local\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg
+      #$ INCLUDES="-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"  
+      #$ SYSTEM_INCLUDES= 
+      #$ LIBRARIES=  "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"
+      #$ CUDAFE_FLAGS=
+      #$ PTXAS_FLAGS=
+      #$ erase tmp/a_dlink.reg.c
+      CMakeCUDACompilerId.cu
+      #$ resource file tmp/CMakeCUDACompilerId.cpp4.ii.res: [-D__CUDA_ARCH_LIST__=750 -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]
+      #$ cl.exe @"tmp/CMakeCUDACompilerId.cpp4.ii.res" > "tmp/CMakeCUDACompilerId.cpp4.ii" 
+      CMakeCUDACompilerId.cu
+      #$ cudafe++ --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" 
+      #$ resource file tmp/CMakeCUDACompilerId.cpp1.ii.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]
+      #$ cl.exe @"tmp/CMakeCUDACompilerId.cpp1.ii.res" > "tmp/CMakeCUDACompilerId.cpp1.ii" 
+      CMakeCUDACompilerId.cu
+      #$ ""%CICC_PATH%\\cicc" --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed  -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx""
+      #$ ptxas -arch=sm_75 -m64 "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" 
+      #$ fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" 
+      #$ resource file tmp/CMakeCUDACompilerId.obj.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"     "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.cudafe1.cpp" ]
+      #$ cl.exe @"tmp/CMakeCUDACompilerId.obj.res" -Fo"tmp/CMakeCUDACompilerId.obj" 
+      CMakeCUDACompilerId.cudafe1.cpp
+      #$ resource file tmp/a_dlink.sm_75.cubin.optf: [-m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.obj"  cudadevrt.lib  -o "tmp/a_dlink.sm_75.cubin"]
+      #$ nvlink -optf "tmp/a_dlink.sm_75.cubin.optf"
+      #$ fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" 
+      #$ resource file tmp/a_dlink.obj.res: [-D__CUDA_ARCH_LIST__=750 -nologo -c -TP -EHsc -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\crt\\link.stub" ]
+      #$ cl.exe @"tmp/a_dlink.obj.res" -Fo"tmp/a_dlink.obj" 
+      link.stub
+      #$ resource file tmp/a.exe.res: [-D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib]
+      #$ cl.exe @"tmp/a.exe.res" -Fe"a.exe" 
+      
+      
+      Compilation of the CUDA compiler identification source "CMakeCUDACompilerId.cu" produced "a.exe"
+      
+      The CUDA compiler identification is NVIDIA, found in:
+        C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/3.31.6/CompilerIdCUDA/a.exe
+      The host compiler identification is MSVC
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1288 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:131 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting CUDA compiler /showIncludes prefix:
+        nvcc fatal   : Don't know what to do with 'C:/c'
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:1288 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:131 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Detecting CUDA compiler /showIncludes prefix:
+        nvcc fatal   : Don't know what to do with 'C:/c'
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:128 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:242 (cmake_nvcc_parse_implicit_info)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CUDA nvcc implicit link information:
+        found 'PATH=' string: [C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\x64;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin;;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Program Files\\dotnet\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2026.1.0\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;c:\\users\\aminebarrak\\.local\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg]
+        found 'LIBRARIES=' string: ["/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"]
+        found 'INCLUDES=' string: ["-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"  ]
+        considering line: [#$ erase tmp/a_dlink.reg.c]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [resource file tmp/CMakeCUDACompilerId.cpp4.ii.res: [-D__CUDA_ARCH_LIST__=750 -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.cpp4.ii.res" > "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [cudafe++ --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [resource file tmp/CMakeCUDACompilerId.cpp1.ii.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.cpp1.ii.res" > "tmp/CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [""%CICC_PATH%\\cicc" --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed  -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx""]
+        considering line: [ptxas -arch=sm_75 -m64 "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" ]
+        considering line: [fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" ]
+        considering line: [resource file tmp/CMakeCUDACompilerId.obj.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"     "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.cudafe1.cpp" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.obj.res" -Fo"tmp/CMakeCUDACompilerId.obj" ]
+        considering line: [CMakeCUDACompilerId.cudafe1.cpp]
+        considering line: [resource file tmp/a_dlink.sm_75.cubin.optf: [-m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.obj"  cudadevrt.lib  -o "tmp/a_dlink.sm_75.cubin"]]
+          extracted link line: [resource file tmp/a_dlink.sm_75.cubin.optf: [-m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.obj"  cudadevrt.lib  -o "tmp/a_dlink.sm_75.cubin"]]
+        considering line: [nvlink -optf "tmp/a_dlink.sm_75.cubin.optf"]
+          ignoring nvlink line
+        considering line: [fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" ]
+        considering line: [resource file tmp/a_dlink.obj.res: [-D__CUDA_ARCH_LIST__=750 -nologo -c -TP -EHsc -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\crt\\link.stub" ]]
+        considering line: [cl.exe @"tmp/a_dlink.obj.res" -Fo"tmp/a_dlink.obj" ]
+        considering line: [link.stub]
+        considering line: [resource file tmp/a.exe.res: [-D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib]]
+          extracted link line: [resource file tmp/a.exe.res: [-D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib]]
+        considering line: [cl.exe @"tmp/a.exe.res" -Fe"a.exe" ]
+          extracted link line: [cl.exe -D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib -Fe"a.exe" ]
+        considering line: []
+      
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        link line: [cuda-fake-ld cl.exe -D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib -Fe"a.exe" ]
+          arg [cuda-fake-ld] ==> ignore
+          arg [cl.exe] ==> recognize MSVC cl
+          arg [-D__CUDA_ARCH_LIST__=750] ==> ignore
+          arg [-nologo] ==> ignore
+          arg [C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj] ==> ignore
+          arg [C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj] ==> ignore
+          arg [-link] ==> ignore MSVC cl option
+          arg [-INCREMENTAL:NO] ==> ignore
+          arg [/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64] ==> dir [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64]
+          arg [cudadevrt.lib] ==> lib [cudadevrt.lib]
+          arg [cudart.lib] ==> lib [cudart.lib]
+          arg [-Fea.exe] ==> ignore
+        collapse library dir [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64] ==> [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64]
+        implicit libs: [cudadevrt.lib;cudart.lib]
+        implicit objs: []
+        implicit dirs: [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CMakeNVCCParseImplicitInfo.cmake:146 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:242 (cmake_nvcc_parse_implicit_info)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CUDA nvcc include information:
+        found 'PATH=' string: [C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\VCPackages;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\MSBuild\\Current\\bin\\Roslyn;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Team Tools\\DiagnosticsHub\\Collector;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\10.0.26100.0\\\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\bin\\\\x64;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\\\MSBuild\\Current\\Bin\\amd64;C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\x64;C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin;;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Program Files\\dotnet\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Program Files\\NVIDIA Corporation\\Nsight Compute 2026.1.0\\;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\terraform;C:\\Program Files\\ImageMagick-7.1.1-Q16-HDRI;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\ProgramData\\chocolatey\\bin;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Program Files\\Git\\cmd;C:\\Program Files\\CMake\\bin;C:\\Program Files\\Amazon\\AWSSAMCLI\\bin\\;C:\\Program Files\\Amazon\\AWSCLIV2\\;C:\\Users\\aminebarrak\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\msys64\\ucrt64\\bin;C:\\Users\\aminebarrak\\AppData\\Roaming\\npm;C:\\Users\\aminebarrak\\AppData\\Local\\GitHubDesktop\\bin;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Ollama;C:\\Users\\aminebarrak\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python311\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\aminebarrak\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;c:\\users\\aminebarrak\\.local\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\VC\\Linux\\bin\\ConnectionManagerExe;C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\vcpkg]
+        found 'LIBRARIES=' string: ["/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"]
+        found 'INCLUDES=' string: ["-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"  ]
+        considering line: [#$ erase tmp/a_dlink.reg.c]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [resource file tmp/CMakeCUDACompilerId.cpp4.ii.res: [-D__CUDA_ARCH_LIST__=750 -nologo -E -TP -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.cpp4.ii.res" > "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [cudafe++ --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed --m64 --parse_templates --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.cpp" --stub_file_name "CMakeCUDACompilerId.cudafe1.stub.c" --gen_module_id_file --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" "tmp/CMakeCUDACompilerId.cpp4.ii" ]
+        considering line: [resource file tmp/CMakeCUDACompilerId.cpp1.ii.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -E -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc -D__CUDACC__ -D__NVCC__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 -FI "cuda_runtime.h" "CMakeCUDACompilerId.cu" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.cpp1.ii.res" > "tmp/CMakeCUDACompilerId.cpp1.ii" ]
+        considering line: [CMakeCUDACompilerId.cu]
+        considering line: [""%CICC_PATH%\\cicc" --ms_c++14 --static-host-stub --device-hidden-visibility --microsoft_version=1950 --msvc_target_version=1950 --compiler_bindir "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.50.35717/bin/HostX64/x64/../../../../../../.." --sdk_dir "C:/Program Files (x86)/Windows Kits/10/" --display_error_number --orig_src_file_name "CMakeCUDACompilerId.cu" --orig_src_path_name "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\CMakeCUDACompilerId.cu" --allow_managed  -arch compute_75 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name "CMakeCUDACompilerId.fatbin.c"  -tused --module_id_file_name "tmp/CMakeCUDACompilerId.module_id" --gen_c_file_name "tmp/CMakeCUDACompilerId.cudafe1.c" --stub_file_name "tmp/CMakeCUDACompilerId.cudafe1.stub.c" --gen_device_file_name "tmp/CMakeCUDACompilerId.cudafe1.gpu"  "tmp/CMakeCUDACompilerId.cpp1.ii" -o "tmp/CMakeCUDACompilerId.ptx""]
+        considering line: [ptxas -arch=sm_75 -m64 "tmp/CMakeCUDACompilerId.ptx"  -o "tmp/CMakeCUDACompilerId.sm_75.cubin" ]
+        considering line: [fatbinary --create="tmp/CMakeCUDACompilerId.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " "--image3=kind=elf,sm=75,file=tmp/CMakeCUDACompilerId.sm_75.cubin" "--image3=kind=ptx,sm=75,file=tmp/CMakeCUDACompilerId.ptx" --embedded-fatbin="tmp/CMakeCUDACompilerId.fatbin.c" ]
+        considering line: [resource file tmp/CMakeCUDACompilerId.obj.res: [-D__CUDA_ARCH__=750 -D__CUDA_ARCH_LIST__=750 -nologo -c -TP  -DCUDA_DOUBLE_MATH_FUNCTIONS -EHsc "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"     "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.cudafe1.cpp" ]]
+        considering line: [cl.exe @"tmp/CMakeCUDACompilerId.obj.res" -Fo"tmp/CMakeCUDACompilerId.obj" ]
+        considering line: [CMakeCUDACompilerId.cudafe1.cpp]
+        considering line: [resource file tmp/a_dlink.sm_75.cubin.optf: [-m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.obj"  cudadevrt.lib  -o "tmp/a_dlink.sm_75.cubin"]]
+          extracted link line: [resource file tmp/a_dlink.sm_75.cubin.optf: [-m64 --arch=sm_75 --register-link-binaries="tmp/a_dlink.reg.c"    "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64" -cpu-arch=X86_64 "tmp/CMakeCUDACompilerId.obj"  cudadevrt.lib  -o "tmp/a_dlink.sm_75.cubin"]]
+        considering line: [nvlink -optf "tmp/a_dlink.sm_75.cubin.optf"]
+          ignoring nvlink line
+        considering line: [fatbinary --create="tmp/a_dlink.fatbin" -64 --cicc-cmdline="-ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 " -link "--image3=kind=elf,sm=75,file=tmp/a_dlink.sm_75.cubin" --embedded-fatbin="tmp/a_dlink.fatbin.c" ]
+        considering line: [resource file tmp/a_dlink.obj.res: [-D__CUDA_ARCH_LIST__=750 -nologo -c -TP -EHsc -DFATBINFILE="\\"tmp/a_dlink.fatbin.c\\"" -DREGISTERLINKBINARYFILE="\\"tmp/a_dlink.reg.c\\""  -I. -D__NV_EXTRA_INITIALIZATION= -D__NV_EXTRA_FINALIZATION= -D__CUDA_INCLUDE_COMPILER_INTERNAL_HEADERS__  "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include" "-IC:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../include/cccl"      -D__CUDACC_VER_MAJOR__=13 -D__CUDACC_VER_MINOR__=2 -D__CUDACC_VER_BUILD__=51 -D__CUDA_API_VER_MAJOR__=13 -D__CUDA_API_VER_MINOR__=2 -D__NVCC_DIAG_PRAGMA_SUPPORT__=1 -D__CUDACC_DEVICE_ATOMIC_BUILTINS__=1 "C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v13.2\\bin\\crt\\link.stub" ]]
+        considering line: [cl.exe @"tmp/a_dlink.obj.res" -Fo"tmp/a_dlink.obj" ]
+        considering line: [link.stub]
+        considering line: [resource file tmp/a.exe.res: [-D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib]]
+          extracted link line: [resource file tmp/a.exe.res: [-D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib]]
+        considering line: [cl.exe @"tmp/a.exe.res" -Fe"a.exe" ]
+          extracted link line: [cl.exe -D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib -Fe"a.exe" ]
+        considering line: []
+      
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        link line: [cuda-fake-ld cl.exe -D__CUDA_ARCH_LIST__=750 -nologo "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj" "C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj" -link -INCREMENTAL:NO   "/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64"  cudadevrt.lib  cudart.lib -Fe"a.exe" ]
+          arg [cuda-fake-ld] ==> ignore
+          arg [cl.exe] ==> recognize MSVC cl
+          arg [-D__CUDA_ARCH_LIST__=750] ==> ignore
+          arg [-nologo] ==> ignore
+          arg [C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\a_dlink.obj] ==> ignore
+          arg [C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\3.31.6\\CompilerIdCUDA\\tmp\\CMakeCUDACompilerId.obj] ==> ignore
+          arg [-link] ==> ignore MSVC cl option
+          arg [-INCREMENTAL:NO] ==> ignore
+          arg [/LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64] ==> dir [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64]
+          arg [cudadevrt.lib] ==> lib [cudadevrt.lib]
+          arg [cudart.lib] ==> lib [cudart.lib]
+          arg [-Fea.exe] ==> ignore
+        collapse library dir [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/bin/../lib/x64] ==> [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64]
+        implicit libs: [cudadevrt.lib;cudart.lib]
+        implicit objs: []
+        implicit dirs: [C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-rq2b5y"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-rq2b5y"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "75"
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-rq2b5y'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_91a12\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_91a12.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_91a12.dir\\build
+        Building CXX object CMakeFiles/cmTC_91a12.dir/CMakeCXXCompilerABI.cpp.obj
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\\cmTC_91a12.dir\\CMakeCXXCompilerABI.cpp.obj.d --working-dir=C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rq2b5y --filter-prefix="Note: including file: " -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nmB1E.tmp
+        CMakeCXXCompilerABI.cpp
+        Linking CXX executable cmTC_91a12.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_91a12.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_91a12.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nmC77.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_91a12.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_91a12.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_91a12.dir/manifest.res CMakeFiles\\cmTC_91a12.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_91a12.dir\\objects1.rsp /out:cmTC_91a12.exe /implib:cmTC_91a12.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rq2b5y\\cmTC_91a12.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_91a12.dir/intermediate.manifest CMakeFiles\\cmTC_91a12.dir/manifest.res
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_91a12.dir/intermediate.manifest /out:CMakeFiles\\cmTC_91a12.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_91a12.dir/manifest.res CMakeFiles\\cmTC_91a12.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_91a12.dir\\objects1.rsp /out:cmTC_91a12.exe /implib:cmTC_91a12.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-rq2b5y\\cmTC_91a12.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_91a12.dir/intermediate.manifest CMakeFiles\\cmTC_91a12.dir/manifest.res
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/PROGRA~1/MICROS~4/18/COMMUN~1/VC/Tools/MSVC/1450~1.357/bin/Hostx64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/PROGRA~1/MICROS~4/18/COMMUN~1/VC/Tools/MSVC/1450~1.357/bin/Hostx64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.50.35727.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CUDA compiler ABI info"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-eihhsj"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-eihhsj"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "75"
+      CMAKE_CUDA_FLAGS: "-D_WINDOWS -Xcompiler=\" /GR /EHsc\""
+      CMAKE_CUDA_FLAGS_DEBUG: "-Xcompiler=\" -Zi -Ob0 -Od /RTC1\""
+      CMAKE_CUDA_RUNTIME_LIBRARY: "Static"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CUDA_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-eihhsj'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_2d6b8\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_2d6b8.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_2d6b8.dir\\build
+        Building CUDA object CMakeFiles/cmTC_2d6b8.dir/CMakeCUDACompilerABI.cu.obj
+        	C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v13.2\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_75,code=[compute_75,sm_75]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_2d6b8.dir\\,-FS
+        cl : Command line warning D9002 : ignoring unknown option '-v'
+        CMakeCUDACompilerABI.cu
+        cl : Command line warning D9002 : ignoring unknown option '-v'
+        CMakeCUDACompilerABI.cu
+        CMakeCUDACompilerABI.cu
+        cl : Command line warning D9002 : ignoring unknown option '-v'
+        tmpxft_000040d4_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp
+        C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 'return': truncation from 'int' to 'bool'
+        Linking CUDA executable cmTC_2d6b8.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_2d6b8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo "CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj"  @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm11D5.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_2d6b8.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_2d6b8.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_2d6b8.dir/manifest.res CMakeFiles\\cmTC_2d6b8.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj /out:cmTC_2d6b8.exe /implib:cmTC_2d6b8.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-eihhsj\\cmTC_2d6b8.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL cudadevrt.lib cudart_static.lib -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_2d6b8.dir/intermediate.manifest CMakeFiles\\cmTC_2d6b8.dir/manifest.res
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+           Creating library cmTC_2d6b8.lib and object cmTC_2d6b8.exp
+        LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_2d6b8.dir/intermediate.manifest /out:CMakeFiles\\cmTC_2d6b8.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_2d6b8.dir/manifest.res CMakeFiles\\cmTC_2d6b8.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj /out:cmTC_2d6b8.exe /implib:cmTC_2d6b8.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-eihhsj\\cmTC_2d6b8.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL cudadevrt.lib cudart_static.lib -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_2d6b8.dir/intermediate.manifest CMakeFiles\\cmTC_2d6b8.dir/manifest.res
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+           Creating library cmTC_2d6b8.lib and object cmTC_2d6b8.exp
+        LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CUDA implicit include dir info: rv=start
+        warn: unable to parse implicit include dirs!
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CUDA implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        ignore line: [Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-eihhsj']
+        ignore line: []
+        ignore line: [Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_2d6b8\\fast]
+        ignore line: [	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_2d6b8.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_2d6b8.dir\\build]
+        ignore line: [Building CUDA object CMakeFiles/cmTC_2d6b8.dir/CMakeCUDACompilerABI.cu.obj]
+        ignore line: [	C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v13.2\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc"  -Xcompiler=" -Zi -Ob0 -Od /RTC1" "--generate-code=arch=compute_75 code=[compute_75 sm_75]" -Xcompiler=-MDd   -Xcompiler=-v -MD -MT CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj -MF CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj.d -x cu -c "C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCUDACompilerABI.cu" -o CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_2d6b8.dir\\ -FS]
+        ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v']
+        ignore line: [CMakeCUDACompilerABI.cu]
+        ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v']
+        ignore line: [CMakeCUDACompilerABI.cu]
+        ignore line: [CMakeCUDACompilerABI.cu]
+        ignore line: [cl : Command line warning D9002 : ignoring unknown option '-v']
+        ignore line: [tmpxft_000040d4_00000000-7_CMakeCUDACompilerABI.cudafe1.cpp]
+        ignore line: [C:\\Program Files\\CMake\\share\\cmake-3.31\\Modules\\CMakeCompilerCUDAArch.h(10): warning C4305: 'return': truncation from 'int' to 'bool']
+        ignore line: [Linking CUDA executable cmTC_2d6b8.exe]
+        ignore line: [	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_2d6b8.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo "CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj"  @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm11D5.tmp]
+        ignore line: [Visual Studio Incremental Link with embedded manifests]
+        ignore line: [Create CMakeFiles\\cmTC_2d6b8.dir/manifest.rc]
+        ignore line: [Create empty: CMakeFiles\\cmTC_2d6b8.dir/embed.manifest]
+        ignore line: [RC Pass 1:]
+        ignore line: [C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_2d6b8.dir/manifest.res CMakeFiles\\cmTC_2d6b8.dir/manifest.rc]
+        ignore line: [LINK Pass 1:]
+        link line: [C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj /out:cmTC_2d6b8.exe /implib:cmTC_2d6b8.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-eihhsj\\cmTC_2d6b8.pdb /version:0.0 /machine:x64 -v /debug /INCREMENTAL cudadevrt.lib cudart_static.lib -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_2d6b8.dir/intermediate.manifest CMakeFiles\\cmTC_2d6b8.dir/manifest.res]
+          arg [C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe] ==> ignore
+          arg [/nologo] ==> ignore
+          arg [CMakeFiles\\cmTC_2d6b8.dir\\CMakeCUDACompilerABI.cu.obj] ==> ignore
+          arg [/out:cmTC_2d6b8.exe] ==> ignore
+          arg [/implib:cmTC_2d6b8.lib] ==> ignore MSVC link option
+          arg [/pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-eihhsj\\cmTC_2d6b8.pdb] ==> ignore
+          arg [/version:0.0] ==> ignore
+          arg [/machine:x64] ==> ignore
+          arg [-v] ==> ignore
+          arg [/debug] ==> ignore
+          arg [/INCREMENTAL] ==> ignore
+          arg [cudadevrt.lib] ==> lib [cudadevrt.lib]
+          arg [cudart_static.lib] ==> lib [cudart_static.lib]
+          arg [-LIBPATH:C:/Program] ==> dir [C:/Program]
+          arg [Files/NVIDIA] ==> ignore
+          arg [GPU] ==> ignore
+          arg [Computing] ==> ignore
+          arg [Toolkit/CUDA/v13.2/lib/x64] ==> ignore
+          arg [/MANIFEST] ==> ignore
+          arg [/MANIFESTFILE:CMakeFiles\\cmTC_2d6b8.dir/intermediate.manifest] ==> ignore
+          arg [CMakeFiles\\cmTC_2d6b8.dir/manifest.res] ==> ignore
+        linker tool for 'CUDA': C:/PROGRA~1/MICROS~4/18/COMMUN~1/VC/Tools/MSVC/1450~1.357/bin/Hostx64/x64/link.exe
+        collapse library dir [C:/Program] ==> [C:/Program]
+        implicit libs: [cudadevrt.lib;cudart_static.lib]
+        implicit objs: []
+        implicit dirs: [C:/Program]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/CMakeTestCUDACompiler.cmake:19 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CUDA compiler's linker: "C:/PROGRA~1/MICROS~4/18/COMMUN~1/VC/Tools/MSVC/1450~1.357/bin/Hostx64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.50.35727.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:252 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:522 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:19 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-v8ajvy"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-v8ajvy"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "89"
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_openmp"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-v8ajvy'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_1226a\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_1226a.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_1226a.dir\\build
+        Building CXX object CMakeFiles/cmTC_1226a.dir/OpenMPTryFlag.cpp.obj
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\\cmTC_1226a.dir\\OpenMPTryFlag.cpp.obj.d --working-dir=C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v8ajvy --filter-prefix="Note: including file: " -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm15EC.tmp
+        OpenMPTryFlag.cpp
+        Linking CXX executable cmTC_1226a.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_1226a.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_1226a.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm163B.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_1226a.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_1226a.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_1226a.dir/manifest.res CMakeFiles\\cmTC_1226a.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_1226a.dir\\objects1.rsp /out:cmTC_1226a.exe /implib:cmTC_1226a.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v8ajvy\\cmTC_1226a.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_1226a.dir/intermediate.manifest CMakeFiles\\cmTC_1226a.dir/manifest.res
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_1226a.dir/intermediate.manifest /out:CMakeFiles\\cmTC_1226a.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_1226a.dir/manifest.res CMakeFiles\\cmTC_1226a.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_1226a.dir\\objects1.rsp /out:cmTC_1226a.exe /implib:cmTC_1226a.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-v8ajvy\\cmTC_1226a.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_1226a.dir/intermediate.manifest CMakeFiles\\cmTC_1226a.dir/manifest.res
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:252 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:522 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:19 (find_package)"
+    description: "Detecting CUDA OpenMP compiler info"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-7g3j23"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-7g3j23"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "89"
+      CMAKE_CUDA_FLAGS: "-D_WINDOWS -Xcompiler=\" /GR /EHsc\""
+      CMAKE_CUDA_FLAGS_DEBUG: "-Xcompiler=\" -Zi -Ob0 -Od /RTC1\""
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CUDA_openmp"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-7g3j23'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_0bf87\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_0bf87.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_0bf87.dir\\build
+        Building CUDA object CMakeFiles/cmTC_0bf87.dir/OpenMPTryFlag.cu.obj
+        	C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v13.2\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc" -openmp -Xcompiler=" -Zi -Ob0 -Od /RTC1" -std=c++17 "--generate-code=arch=compute_89,code=[compute_89,sm_89]" -Xcompiler=-MDd -MD -MT CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj -MF CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj.d -x cu -c C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\OpenMPTryFlag.cu -o CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_0bf87.dir\\,-FS
+        OpenMPTryFlag.cu
+        tmpxft_00008524_00000000-7_OpenMPTryFlag.cudafe1.cpp
+        Linking CUDA executable cmTC_0bf87.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_0bf87.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm1B2C.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_0bf87.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_0bf87.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_0bf87.dir/manifest.res CMakeFiles\\cmTC_0bf87.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp /out:cmTC_0bf87.exe /implib:cmTC_0bf87.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\cmTC_0bf87.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL -v -openmp @CMakeFiles\\cmTC_0bf87.dir\\linkLibs.rsp -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_0bf87.dir/intermediate.manifest CMakeFiles\\cmTC_0bf87.dir/manifest.res
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+        LINK : warning LNK4044: unrecognized option '/openmp'; ignored
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_0bf87.dir/intermediate.manifest /out:CMakeFiles\\cmTC_0bf87.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_0bf87.dir/manifest.res CMakeFiles\\cmTC_0bf87.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp /out:cmTC_0bf87.exe /implib:cmTC_0bf87.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\cmTC_0bf87.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL -v -openmp @CMakeFiles\\cmTC_0bf87.dir\\linkLibs.rsp -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_0bf87.dir/intermediate.manifest CMakeFiles\\cmTC_0bf87.dir/manifest.res
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+        LINK : warning LNK4044: unrecognized option '/openmp'; ignored
+        LINK : warning LNK4044: unrecognized option '/v'; ignored
+        LINK : warning LNK4044: unrecognized option '/openmp'; ignored
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:296 (message)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:522 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:19 (find_package)"
+    message: |
+      Parsed CUDA OpenMP implicit link information from above output:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-7g3j23']
+        ignore line: []
+        ignore line: [Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_0bf87\\fast]
+        ignore line: [	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_0bf87.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_0bf87.dir\\build]
+        ignore line: [Building CUDA object CMakeFiles/cmTC_0bf87.dir/OpenMPTryFlag.cu.obj]
+        ignore line: [	C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v13.2\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc" -openmp -Xcompiler=" -Zi -Ob0 -Od /RTC1" -std=c++17 "--generate-code=arch=compute_89 code=[compute_89 sm_89]" -Xcompiler=-MDd -MD -MT CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj -MF CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj.d -x cu -c C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\OpenMPTryFlag.cu -o CMakeFiles\\cmTC_0bf87.dir\\OpenMPTryFlag.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_0bf87.dir\\ -FS]
+        ignore line: [OpenMPTryFlag.cu]
+        ignore line: [tmpxft_00008524_00000000-7_OpenMPTryFlag.cudafe1.cpp]
+        ignore line: [Linking CUDA executable cmTC_0bf87.exe]
+        ignore line: [	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_0bf87.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm1B2C.tmp]
+        ignore line: [Visual Studio Incremental Link with embedded manifests]
+        ignore line: [Create CMakeFiles\\cmTC_0bf87.dir/manifest.rc]
+        ignore line: [Create empty: CMakeFiles\\cmTC_0bf87.dir/embed.manifest]
+        ignore line: [RC Pass 1:]
+        ignore line: [C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_0bf87.dir/manifest.res CMakeFiles\\cmTC_0bf87.dir/manifest.rc]
+        ignore line: [LINK Pass 1:]
+        link line: [C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp /out:cmTC_0bf87.exe /implib:cmTC_0bf87.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\cmTC_0bf87.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL -v -openmp @CMakeFiles\\cmTC_0bf87.dir\\linkLibs.rsp -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_0bf87.dir/intermediate.manifest CMakeFiles\\cmTC_0bf87.dir/manifest.res]
+          arg [C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe] ==> ignore
+          arg [/nologo] ==> ignore
+          arg [@CMakeFiles\\cmTC_0bf87.dir\\objects1.rsp] ==> ignore
+          arg [/out:cmTC_0bf87.exe] ==> ignore
+          arg [/implib:cmTC_0bf87.lib] ==> ignore MSVC link option
+          arg [/pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-7g3j23\\cmTC_0bf87.pdb] ==> ignore
+          arg [/version:0.0] ==> ignore
+          arg [/machine:x64] ==> ignore
+          arg [/debug] ==> ignore
+          arg [/INCREMENTAL] ==> ignore
+          arg [-v] ==> ignore
+          arg [-openmp] ==> ignore
+          arg [@CMakeFiles\\cmTC_0bf87.dir\\linkLibs.rsp] ==> ignore
+          arg [-LIBPATH:C:/Program] ==> dir [C:/Program]
+          arg [Files/NVIDIA] ==> ignore
+          arg [GPU] ==> ignore
+          arg [Computing] ==> ignore
+          arg [Toolkit/CUDA/v13.2/lib/x64] ==> ignore
+          arg [/MANIFEST] ==> ignore
+          arg [/MANIFESTFILE:CMakeFiles\\cmTC_0bf87.dir/intermediate.manifest] ==> ignore
+          arg [CMakeFiles\\cmTC_0bf87.dir/manifest.res] ==> ignore
+        collapse library dir [C:/Program] ==> [C:/Program]
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: [C:/Program]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:456 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:596 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:19 (find_package)"
+    description: "Detecting CXX OpenMP version"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-kmk43v"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-kmk43v"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "89"
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /GR /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_SPECTEST_CXX_"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-kmk43v'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_95f84\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_95f84.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_95f84.dir\\build
+        Building CXX object CMakeFiles/cmTC_95f84.dir/OpenMPCheckVersion.cpp.obj
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E cmake_cl_compile_depends --dep-file=CMakeFiles\\cmTC_95f84.dir\\OpenMPCheckVersion.cpp.obj.d --working-dir=C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kmk43v --filter-prefix="Note: including file: " -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\cl.exe @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm1C83.tmp
+        OpenMPCheckVersion.cpp
+        Linking CXX executable cmTC_95f84.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --msvc-ver=1950 --intdir=CMakeFiles\\cmTC_95f84.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_95f84.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm1CD3.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_95f84.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_95f84.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_95f84.dir/manifest.res CMakeFiles\\cmTC_95f84.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_95f84.dir\\objects1.rsp /out:cmTC_95f84.exe /implib:cmTC_95f84.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kmk43v\\cmTC_95f84.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_95f84.dir/intermediate.manifest CMakeFiles\\cmTC_95f84.dir/manifest.res
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_95f84.dir/intermediate.manifest /out:CMakeFiles\\cmTC_95f84.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_95f84.dir/manifest.res CMakeFiles\\cmTC_95f84.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_95f84.dir\\objects1.rsp /out:cmTC_95f84.exe /implib:cmTC_95f84.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-kmk43v\\cmTC_95f84.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL /subsystem:console kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_95f84.dir/intermediate.manifest CMakeFiles\\cmTC_95f84.dir/manifest.res
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:456 (try_compile)"
+      - "C:/Program Files/CMake/share/cmake-3.31/Modules/FindOpenMP.cmake:596 (_OPENMP_GET_SPEC_DATE)"
+      - "CMakeLists.txt:19 (find_package)"
+    description: "Detecting CUDA OpenMP version"
+    directories:
+      source: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-binivv"
+      binary: "C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-binivv"
+    cmakeVariables:
+      CMAKE_CUDA_ARCHITECTURES: "89"
+      CMAKE_CUDA_FLAGS: "-D_WINDOWS -Xcompiler=\" /GR /EHsc\""
+      CMAKE_CUDA_FLAGS_DEBUG: "-Xcompiler=\" -Zi -Ob0 -Od /RTC1\""
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "OpenMP_SPECTEST_CUDA_"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/aminebarrak/Downloads/groebner_experiments_full/groebner_experiments/cpp/exp3_2_cuda/build/CMakeFiles/CMakeScratch/TryCompile-binivv'
+        
+        Run Build Command(s): "C:/Program Files/CMake/bin/cmake.exe" -E env VERBOSE=1 nmake -f Makefile /nologo cmTC_5b900\\fast
+        	"C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.50.35717\\bin\\HostX64\\x64\\nmake.exe"  -f CMakeFiles\\cmTC_5b900.dir\\build.make /nologo -L                  CMakeFiles\\cmTC_5b900.dir\\build
+        Building CUDA object CMakeFiles/cmTC_5b900.dir/OpenMPCheckVersion.cu.obj
+        	C:\\PROGRA~1\\NVIDIA~2\\CUDA\\v13.2\\bin\\nvcc.exe -forward-unknown-to-host-compiler   -D_WINDOWS -Xcompiler=" /GR /EHsc" -openmp -Xcompiler=" -Zi -Ob0 -Od /RTC1" -std=c++17 "--generate-code=arch=compute_89,code=[compute_89,sm_89]" -Xcompiler=-MDd -MD -MT CMakeFiles\\cmTC_5b900.dir\\OpenMPCheckVersion.cu.obj -MF CMakeFiles\\cmTC_5b900.dir\\OpenMPCheckVersion.cu.obj.d -x cu -c C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-binivv\\OpenMPCheckVersion.cu -o CMakeFiles\\cmTC_5b900.dir\\OpenMPCheckVersion.cu.obj -Xcompiler=-FdCMakeFiles\\cmTC_5b900.dir\\,-FS
+        OpenMPCheckVersion.cu
+        tmpxft_000080ec_00000000-7_OpenMPCheckVersion.cudafe1.cpp
+        Linking CUDA executable cmTC_5b900.exe
+        	"C:\\Program Files\\CMake\\bin\\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\\cmTC_5b900.dir --rc=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe --mt=C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe --manifests -- C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_5b900.dir\\objects1.rsp @C:\\Users\\AMINEB~1\\AppData\\Local\\Temp\\nm2231.tmp
+        Visual Studio Incremental Link with embedded manifests
+        Create CMakeFiles\\cmTC_5b900.dir/manifest.rc
+        Create empty: CMakeFiles\\cmTC_5b900.dir/embed.manifest
+        RC Pass 1:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_5b900.dir/manifest.res CMakeFiles\\cmTC_5b900.dir/manifest.rc
+        LINK Pass 1:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_5b900.dir\\objects1.rsp /out:cmTC_5b900.exe /implib:cmTC_5b900.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-binivv\\cmTC_5b900.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL @CMakeFiles\\cmTC_5b900.dir\\linkLibs.rsp -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_5b900.dir/intermediate.manifest CMakeFiles\\cmTC_5b900.dir/manifest.res
+        MT:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\mt.exe /nologo /manifest CMakeFiles\\cmTC_5b900.dir/intermediate.manifest /out:CMakeFiles\\cmTC_5b900.dir/embed.manifest /notify_update
+        RC Pass 2:
+        C:\\PROGRA~2\\WI3CF2~1\\10\\bin\\100261~1.0\\x64\\rc.exe /fo CMakeFiles\\cmTC_5b900.dir/manifest.res CMakeFiles\\cmTC_5b900.dir/manifest.rc
+        FINAL LINK:
+        C:\\PROGRA~1\\MICROS~4\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1450~1.357\\bin\\Hostx64\\x64\\link.exe /nologo @CMakeFiles\\cmTC_5b900.dir\\objects1.rsp /out:cmTC_5b900.exe /implib:cmTC_5b900.lib /pdb:C:\\Users\\aminebarrak\\Downloads\\groebner_experiments_full\\groebner_experiments\\cpp\\exp3_2_cuda\\build\\CMakeFiles\\CMakeScratch\\TryCompile-binivv\\cmTC_5b900.pdb /version:0.0 /machine:x64 /debug /INCREMENTAL @CMakeFiles\\cmTC_5b900.dir\\linkLibs.rsp -LIBPATH:C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.2/lib/x64 /MANIFEST /MANIFESTFILE:CMakeFiles\\cmTC_5b900.dir/intermediate.manifest CMakeFiles\\cmTC_5b900.dir/manifest.res
+        
+      exitCode: 0
+...

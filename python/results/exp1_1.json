@@ -1,0 +1,48 @@
+[
+  {
+    "name": "A: P(1,1,2) polynomial",
+    "expected": "Ideal not weighted homogeneous \u2014 pipeline should reject",
+    "got": [
+      "x0**2 - x2",
+      "x1 - x2"
+    ],
+    "is_correct": false,
+    "passed": true,
+    "elapsed_ms": 32.76,
+    "notes": "Paper Example 2 inconsistency \u2014 x1 has wdeg 1, x0^2 has wdeg 2"
+  },
+  {
+    "name": "B: P(1,2,3) homogeneity check",
+    "expected": "homogeneous=True, degree=6",
+    "got": "homogeneous=True, degree=6",
+    "passed": true,
+    "elapsed_ms": 0.39
+  },
+  {
+    "name": "C: non-homogeneity rejection",
+    "expected": "homogeneous=False",
+    "got": "homogeneous=False",
+    "passed": true,
+    "elapsed_ms": 0.12
+  },
+  {
+    "name": "D: weighted GCD",
+    "expected": "d1=4, d2=1",
+    "got": "d1=4, d2=1",
+    "passed": true,
+    "elapsed_ms": 0.02
+  },
+  {
+    "name": "E: P(1,2,3) monomial curve",
+    "expected": "4 generators, degrees [2,3,4,6], all homogeneous",
+    "got": "4 generators, degrees [3, 4, 6, 2]",
+    "passed": true,
+    "elapsed_ms": 17.65,
+    "ideal": [
+      "x0*x1 - x2",
+      "x0*x2 - x1**2",
+      "x1**3 - x2**2",
+      "x0**2 - x1"
+    ]
+  }
+]

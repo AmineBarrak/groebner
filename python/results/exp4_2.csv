@@ -1,0 +1,4 @@
+n_vars,t_raw_sympy,t_seq_pipeline,t_par_pipeline,raw_is_weighted_hom,speedup_vs_raw,p
+2,0.00044,0.00602,0.00558,False,0.079,4
+3,0.00073,0.01432,0.01489,False,0.049,4
+4,0.00133,0.02929,0.02981,False,0.045,4

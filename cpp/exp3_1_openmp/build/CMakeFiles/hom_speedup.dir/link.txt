@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\hom_speedup.dir/objects.a
+C:\msys64\ucrt64\bin\ar.exe qc CMakeFiles\hom_speedup.dir/objects.a @CMakeFiles\hom_speedup.dir\objects1.rsp
+C:\msys64\ucrt64\bin\c++.exe -O3 -DNDEBUG -Wl,--whole-archive CMakeFiles\hom_speedup.dir/objects.a -Wl,--no-whole-archive -o hom_speedup.exe -Wl,--out-implib,libhom_speedup.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\hom_speedup.dir\linkLibs.rsp
