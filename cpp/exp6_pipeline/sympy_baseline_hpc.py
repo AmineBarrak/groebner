@@ -156,10 +156,8 @@ x3p = precompute(px3, max_d)
 # Substitute and collect
 all_t = set()
 cols = []
-for idx, (a,b,c,d_) in enumerate(monoms):
-    p = pmul(pmul(x0p[a], x1p[b]), pmul(x2p[c_], x3p[d_]) if (c_ := c) or True else None)
-    # fix: cleaner
-    p = pmul(pmul(x0p[a], x1p[b]), pmul(x2p[c], x3p[d_]))
+for idx, (a,b,c,dd) in enumerate(monoms):
+    p = pmul(pmul(x0p[a], x1p[b]), pmul(x2p[c], x3p[dd]))
     cols.append(p)
     all_t.update(p.keys())
 
@@ -204,9 +202,9 @@ print(f"  Matrix: {nrows} x {ncols}, nullspace dim {len(ker)}")
 
 # Verify weighted homogeneity
 wdegs = set()
-for j, (a,b,c,d_) in enumerate(monoms):
+for j, (a,b,c,dd) in enumerate(monoms):
     if int_v[j] != 0:
-        wdegs.add(W[0]*a + W[1]*b + W[2]*c + W[3]*d_)
+        wdegs.add(W[0]*a + W[1]*b + W[2]*c + W[3]*dd)
 is_wh = len(wdegs) == 1
 print(f"  Weighted homogeneous: {'YES' if is_wh else 'NO'}")
 
@@ -221,8 +219,8 @@ for tv1, tv2 in test_pts:
     x1v = peval(px1, tv1, tv2)
     x2v = peval(px2, tv1, tv2)
     x3v = peval(px3, tv1, tv2)
-    val = sum(int_v[j] * x0v**a * x1v**b * x2v**c * x3v**d_
-              for j, (a,b,c,d_) in enumerate(monoms) if int_v[j] != 0)
+    val = sum(int_v[j] * x0v**a * x1v**b * x2v**c * x3v**dd
+              for j, (a,b,c,dd) in enumerate(monoms) if int_v[j] != 0)
     if val != 0: all_ok = False
 print(f"  Parametrisation check: {'ALL PASS' if all_ok else 'FAIL'}")
 

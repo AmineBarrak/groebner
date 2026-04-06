@@ -23,10 +23,14 @@ echo "Date:      $(date)"
 echo "Directory: $(pwd)"
 echo ""
 
-module load python/3.10 2>/dev/null || true
-pip install --user sympy 2>/dev/null || true
+# Try to find Python >= 3.8 with sympy
+for mod in python/3.12 python/3.11 python/3.10 python/3.9 python/3.8 python3; do
+    module load "$mod" 2>/dev/null && break
+done
+pip install --user sympy 2>/dev/null || pip3 install --user sympy 2>/dev/null || true
 
 echo "Python: $(python3 --version 2>&1)"
+python3 -c "import sympy; print('SymPy:', sympy.__version__)" 2>&1 || echo "SymPy: NOT FOUND"
 echo ""
 
 python3 sympy_baseline_hpc.py
