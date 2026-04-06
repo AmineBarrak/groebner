@@ -44,7 +44,7 @@
 #include <cuda_runtime.h>
 #include <cusparse.h>
 #include <mpi.h>
-#include <gmpxx.h>
+#include "gmp_wrapper.h"
 
 #include "weighted_poly.h"
 

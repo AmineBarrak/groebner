@@ -22,11 +22,19 @@ find_package(OpenMP      REQUIRED)
 find_package(MPI         REQUIRED)
 
 # GMP — Matilda installs to /cm/shared/apps/gmp/6.1.2
+# Note: Matilda's GMP lacks libgmpxx (no --enable-cxx at build time).
+# We use the C API (gmp.h / mpz_t) directly and provide our own C++ wrapper.
 set(GMP_ROOT "/cm/shared/apps/gmp/6.1.2" CACHE PATH "GMP install prefix")
-find_library(GMP_LIB   gmp   HINTS ${GMP_ROOT}/lib REQUIRED)
-find_library(GMPXX_LIB gmpxx HINTS ${GMP_ROOT}/lib REQUIRED)
-find_path(GMP_INCLUDE_DIR gmpxx.h
+find_library(GMP_LIB gmp HINTS ${GMP_ROOT}/lib REQUIRED)
+find_library(GMPXX_LIB gmpxx HINTS ${GMP_ROOT}/lib)
+find_path(GMP_INCLUDE_DIR gmp.h
     HINTS ${GMP_ROOT}/include $ENV{HOME}/local/include /usr/include)
+
+if(NOT GMPXX_LIB)
+  message(STATUS "libgmpxx not found — using C API wrapper (gmp_wrapper.h)")
+  add_definitions(-DUSE_GMP_C_API)
+  set(GMPXX_LIB "")  # don't link it
+endif()
 
 # -- Target -------------------------------------------------------------
 add_executable(l2_pipeline l2_pipeline.cu)

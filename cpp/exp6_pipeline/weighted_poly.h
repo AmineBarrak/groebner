@@ -18,7 +18,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <gmpxx.h>
+#include "gmp_wrapper.h"  // uses gmpxx.h if available, else C API wrapper
 
 enum VarIdx : int {
     VAR_S  = 0,
