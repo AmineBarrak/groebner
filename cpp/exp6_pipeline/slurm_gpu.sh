@@ -59,6 +59,7 @@ fi
 # -- Build (clean rebuild to avoid stale cmake cache) -------------------
 echo "=== Building ==="
 rm -rf build
+rm -f l2_pipeline_*.out l2_pipeline_*.err
 cmake -B build \
     -DCMAKE_CUDA_ARCHITECTURES=70 \
     -DCMAKE_C_COMPILER=gcc \
