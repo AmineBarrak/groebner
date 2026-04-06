@@ -21,11 +21,12 @@ find_package(CUDAToolkit REQUIRED)
 find_package(OpenMP      REQUIRED)
 find_package(MPI         REQUIRED)
 
-# GMP
-find_library(GMP_LIB   gmp   REQUIRED)
-find_library(GMPXX_LIB gmpxx REQUIRED)
+# GMP — Matilda installs to /cm/shared/apps/gmp/6.1.2
+set(GMP_ROOT "/cm/shared/apps/gmp/6.1.2" CACHE PATH "GMP install prefix")
+find_library(GMP_LIB   gmp   HINTS ${GMP_ROOT}/lib REQUIRED)
+find_library(GMPXX_LIB gmpxx HINTS ${GMP_ROOT}/lib REQUIRED)
 find_path(GMP_INCLUDE_DIR gmpxx.h
-    HINTS $ENV{HOME}/local/include /usr/include)
+    HINTS ${GMP_ROOT}/include $ENV{HOME}/local/include /usr/include)
 
 # -- Target -------------------------------------------------------------
 add_executable(l2_pipeline l2_pipeline.cu)
