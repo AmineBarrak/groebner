@@ -37,6 +37,7 @@
 #include <chrono>
 #include <cmath>
 #include <cassert>
+#include <climits>
 #include <iomanip>
 #include <filesystem>
 
@@ -175,52 +176,47 @@ static std::vector<WPoly> stage1_homogenize(
 
 
 /* =====================================================================
- * STAGE 2: Buchberger/F4 Elimination (CUDA-accelerated)
+ * STAGE 2: Elimination via Substitution + Resultant (CUDA-accelerated)
  *
- * Compute Groebner basis under lex order s > t1 > t2 > x0..x3,
- * then extract elements free of s, t1, t2.
+ * Naive Buchberger in lex order on 7 variables explodes exponentially.
+ * Instead, we exploit the structure of the parametrization:
  *
- * GPU acceleration: batch row reduction of Macaulay matrices.
+ *   Step 2a: F0_hom is linear in t1 -> solve for t1 in terms of (s, x0)
+ *   Step 2b: Substitute into F1_hom -> solve for t2 in terms of (s, x0, x1)
+ *   Step 2c: Substitute both into F2_hom, F3_hom -> get G2(s, x), G3(s, x)
+ *   Step 2d: Compute resultant Res(G2, G3, s) -> eliminates s
+ *   Step 2e: Factor out highest power of leading variable -> degree-30 result
+ *
+ * The resultant is computed as det(Sylvester matrix), which is a large
+ * dense matrix operation — this is where GPU acceleration helps.
  * ===================================================================== */
 
-struct CSRMatrix {
-    int n_rows, n_cols, nnz;
-    std::vector<int>   row_ptr;
-    std::vector<int>   col_ind;
-    std::vector<double> vals;
-};
+/* -- Univariate polynomial in s with WPoly coefficients --------------- */
+/* A polynomial in s whose coefficients are polynomials in (x0,..,x3).
+   Stored as vector: index i = coefficient of s^i. */
+using UniS = std::vector<WPoly>;  // UniS[i] = coeff of s^i
 
-static CSRMatrix build_macaulay_matrix(
-    const std::vector<WPoly>& polys,
-    std::vector<Mono>& mono_list)
-{
-    std::set<Mono, MonoLexCmp> mono_set;
-    for (const auto& p : polys)
-        for (const auto& [m, _] : p.terms) mono_set.insert(m);
-
-    mono_list.assign(mono_set.begin(), mono_set.end());
-    std::map<Mono, int, MonoLexCmp> mono_idx;
-    for (int j = 0; j < (int)mono_list.size(); ++j)
-        mono_idx[mono_list[j]] = j;
-
-    int nr = (int)polys.size();
-    int nc = (int)mono_list.size();
-
-    CSRMatrix M;
-    M.n_rows = nr; M.n_cols = nc;
-    M.row_ptr.resize(nr + 1, 0);
-    for (int i = 0; i < nr; ++i) {
-        for (const auto& [m, c] : polys[i].terms) {
-            M.col_ind.push_back(mono_idx[m]);
-            M.vals.push_back(c.get_d());
-        }
-        M.row_ptr[i + 1] = (int)M.col_ind.size();
-    }
-    M.nnz = (int)M.vals.size();
-    return M;
+static int unis_degree(const UniS& p) {
+    for (int i = (int)p.size() - 1; i >= 0; --i)
+        if (!p[i].is_zero()) return i;
+    return -1;
 }
 
-/* GPU row reduction kernel */
+/* Convert a WPoly (in all 7 vars) to UniS by grouping by s-exponent */
+static UniS to_unis(const WPoly& f) {
+    int max_s = 0;
+    for (const auto& [m, c] : f.terms)
+        max_s = std::max(max_s, m[VAR_S]);
+    UniS result(max_s + 1);
+    for (const auto& [m, c] : f.terms) {
+        Mono nm = m;
+        nm[VAR_S] = 0;  // strip s from monomial
+        result[m[VAR_S]].add_term(nm, c);
+    }
+    return result;
+}
+
+/* GPU row reduction kernel for Sylvester matrix determinant */
 __global__ void gpu_row_reduce_kernel(
     double* __restrict__ dense, int n_rows, int n_cols,
     int pivot_row, int pivot_col)
@@ -236,140 +232,334 @@ __global__ void gpu_row_reduce_kernel(
         dense[row * n_cols + j] -= scale * dense[pivot_row * n_cols + j];
 }
 
-static std::vector<WPoly> gpu_reduce_batch(
-    const std::vector<WPoly>& spolys,
-    const std::vector<WPoly>& basis)
-{
-    std::vector<WPoly> all_polys;
-    all_polys.insert(all_polys.end(), basis.begin(), basis.end());
-    all_polys.insert(all_polys.end(), spolys.begin(), spolys.end());
+/* Substitute t1 = expr(s, x0) into a homogenized polynomial.
+ * From F0_hom: s*x0 + 120*s + 8*t1 = 0  =>  t1 = -s*(x0 + 120)/8
+ *
+ * For each monomial with t1^a, replace t1^a with (-s*(x0+120)/8)^a
+ * = (-1)^a * s^a * (x0+120)^a / 8^a
+ * We work over Z so multiply through by 8^{max_t1_deg} to clear denominators.
+ */
+static WPoly substitute_t1(const WPoly& f, int clear_denom_pow) {
+    // t1 -> -s*(x0+120)/8, cleared: multiply entire poly by 8^clear_denom_pow
+    // For a monomial with t1^a: gets factor (-1)^a * s^a * (x0+120)^a * 8^{clear_denom_pow - a}
+    WPoly result;
 
-    std::vector<Mono> mono_list;
-    CSRMatrix M = build_macaulay_matrix(all_polys, mono_list);
-    if (M.n_rows == 0 || M.n_cols == 0) return {};
+    // Precompute powers of (x0+120) as WPolys
+    // (x0+120)^0 = 1, (x0+120)^1 = x0+120, etc.
+    int max_t1 = 0;
+    for (const auto& [m, _] : f.terms) max_t1 = std::max(max_t1, m[VAR_T1]);
 
-    int nr = M.n_rows, nc = M.n_cols;
-    std::vector<double> dense(nr * nc, 0.0);
-    for (int i = 0; i < nr; ++i)
-        for (int k = M.row_ptr[i]; k < M.row_ptr[i + 1]; ++k)
-            dense[i * nc + M.col_ind[k]] = M.vals[k];
-
-    size_t bytes = (size_t)nr * nc * sizeof(double);
-    int dev_count = 0;
-    cudaGetDeviceCount(&dev_count);
-
-    if (dev_count > 0 && bytes < 2ULL * 1024 * 1024 * 1024) {
-        /* --- GPU path (V100) --- */
-        double* d_dense;
-        CUDA_CHECK(cudaMalloc(&d_dense, bytes));
-        CUDA_CHECK(cudaMemcpy(d_dense, dense.data(), bytes, cudaMemcpyHostToDevice));
-        int blk = 256;
-        for (int p = 0; p < std::min(nr, nc); ++p)
-            gpu_row_reduce_kernel<<<(nr + blk - 1) / blk, blk>>>(d_dense, nr, nc, p, p);
-        CUDA_CHECK(cudaDeviceSynchronize());
-        CUDA_CHECK(cudaMemcpy(dense.data(), d_dense, bytes, cudaMemcpyDeviceToHost));
-        CUDA_CHECK(cudaFree(d_dense));
-    } else {
-        /* --- CPU fallback --- */
-        for (int p = 0; p < std::min(nr, nc); ++p) {
-            double pval = dense[p * nc + p];
-            if (std::abs(pval) < 1e-10) continue;
-            #pragma omp parallel for schedule(static)
-            for (int row = 0; row < nr; ++row) {
-                if (row == p) continue;
-                double sc = dense[row * nc + p] / pval;
-                if (std::abs(sc) < 1e-10) continue;
-                for (int j = 0; j < nc; ++j)
-                    dense[row * nc + j] -= sc * dense[p * nc + j];
-            }
+    std::vector<WPoly> xp120_pow(max_t1 + 1);
+    // (x0+120)^0
+    xp120_pow[0].add_term(mono_zero(), 1);
+    // (x0+120)^1
+    if (max_t1 >= 1) {
+        xp120_pow[1].add_term(mono_var(VAR_X0), 1);
+        xp120_pow[1].add_term(mono_zero(), 120);
+    }
+    for (int k = 2; k <= max_t1; ++k) {
+        // (x0+120)^k = (x0+120)^{k-1} * (x0+120)
+        for (const auto& [ma, ca] : xp120_pow[k-1].terms) {
+            // * x0
+            Mono mx = ma; mx[VAR_X0] += 1;
+            xp120_pow[k].add_term(mx, ca);
+            // * 120
+            xp120_pow[k].add_term(ma, ca * 120);
         }
     }
 
-    // Extract non-zero reduced S-polys
-    std::vector<WPoly> new_polys;
-    int basis_size = (int)basis.size();
-    for (int i = basis_size; i < nr; ++i) {
-        WPoly p;
-        for (int j = 0; j < nc; ++j) {
-            if (std::abs(dense[i * nc + j]) > 1e-6) {
-                mpz_class coef(std::llround(dense[i * nc + j]));
-                if (coef != 0) p.add_term(mono_list[j], coef);
-            }
-        }
-        if (!p.is_zero()) {
-            remove_content(p);
-            new_polys.push_back(std::move(p));
+    for (const auto& [m, c] : f.terms) {
+        int a = m[VAR_T1];  // power of t1
+
+        // Coefficient from clearing denominator: 8^{clear_denom_pow - a}
+        mpz_class eight_pow;
+        mpz_ui_pow_ui(eight_pow.get_mpz_t(), 8, clear_denom_pow - a);
+
+        // Sign: (-1)^a
+        mpz_class sign = (a % 2 == 0) ? mpz_class(1) : mpz_class(-1);
+
+        // New s-exponent: original s-exp + a (from the substitution)
+        int new_s = m[VAR_S] + a;
+
+        // Multiply c * sign * 8^{d-a} * (x0+120)^a
+        mpz_class scalar = c * sign * eight_pow;
+
+        for (const auto& [mp, cp] : xp120_pow[a].terms) {
+            Mono nm = m;
+            nm[VAR_T1] = 0;  // t1 eliminated
+            nm[VAR_S] = new_s;
+            // Add x0 exponents from (x0+120)^a
+            for (int v = 0; v < NUM_VARS; ++v) nm[v] += mp[v];
+            result.add_term(nm, scalar * cp);
         }
     }
-    return new_polys;
+
+    remove_content(result);
+    return result;
+}
+
+/* Substitute t2 = expr(s, x0, x1) into a polynomial.
+ * From F1_hom (after t1 substitution and clearing):
+ *   We solve for t2: the polynomial is linear in t2.
+ *   Coefficient of t2 = some function of (s, x0)
+ *   Remainder = some function of (s, x0, x1)
+ *   => t2 = -remainder / coef_t2
+ *
+ * Instead of dividing, we multiply by coef_t2^{max_t2_deg} to clear.
+ */
+static WPoly substitute_t2(const WPoly& f, const WPoly& t2_coef, const WPoly& t2_remainder) {
+    // For each monomial with t2^b:
+    //   Replace t2^b with (-remainder)^b / coef_t2^b
+    //   Clear denominator by multiplying entire thing by coef_t2^{max_t2}
+    int max_t2 = 0;
+    for (const auto& [m, _] : f.terms) max_t2 = std::max(max_t2, m[VAR_T2]);
+
+    if (max_t2 == 0) return f;  // no t2 to substitute
+
+    // Precompute (-remainder)^k and coef_t2^k
+    std::vector<WPoly> neg_rem_pow(max_t2 + 1);
+    std::vector<WPoly> coef_pow(max_t2 + 1);
+    neg_rem_pow[0].add_term(mono_zero(), 1);
+    coef_pow[0].add_term(mono_zero(), 1);
+
+    WPoly neg_rem;
+    for (const auto& [m, c] : t2_remainder.terms) neg_rem.add_term(m, -c);
+
+    for (int k = 1; k <= max_t2; ++k) {
+        neg_rem_pow[k] = WPoly();
+        for (const auto& [ma, ca] : neg_rem_pow[k-1].terms)
+            for (const auto& [mb, cb] : neg_rem.terms) {
+                Mono nm(NUM_VARS, 0);
+                for (int v = 0; v < NUM_VARS; ++v) nm[v] = ma[v] + mb[v];
+                neg_rem_pow[k].add_term(nm, ca * cb);
+            }
+        remove_content(neg_rem_pow[k]);
+
+        coef_pow[k] = WPoly();
+        for (const auto& [ma, ca] : coef_pow[k-1].terms)
+            for (const auto& [mb, cb] : t2_coef.terms) {
+                Mono nm(NUM_VARS, 0);
+                for (int v = 0; v < NUM_VARS; ++v) nm[v] = ma[v] + mb[v];
+                coef_pow[k].add_term(nm, ca * cb);
+            }
+        remove_content(coef_pow[k]);
+    }
+
+    // Build result: for each term c*m with t2^b,
+    // replace with c * m{t2=0} * (-rem)^b * coef^{max_t2 - b}
+    WPoly result;
+    for (const auto& [m, c] : f.terms) {
+        int b = m[VAR_T2];
+        Mono base_m = m;
+        base_m[VAR_T2] = 0;
+
+        // Multiply: c * base_m * neg_rem_pow[b] * coef_pow[max_t2 - b]
+        // First: neg_rem_pow[b] * coef_pow[max_t2 - b]
+        WPoly product;
+        for (const auto& [mr, cr] : neg_rem_pow[b].terms)
+            for (const auto& [mc, cc] : coef_pow[max_t2 - b].terms) {
+                Mono nm(NUM_VARS, 0);
+                for (int v = 0; v < NUM_VARS; ++v) nm[v] = mr[v] + mc[v];
+                product.add_term(nm, cr * cc);
+            }
+
+        // Now multiply by c * base_m
+        for (const auto& [mp, cp] : product.terms) {
+            Mono nm(NUM_VARS, 0);
+            for (int v = 0; v < NUM_VARS; ++v) nm[v] = base_m[v] + mp[v];
+            result.add_term(nm, c * cp);
+        }
+    }
+
+    remove_content(result);
+    return result;
+}
+
+/* Compute resultant of two univariate polynomials in s via Sylvester matrix.
+ * The Sylvester matrix rows are shifted copies of the two polynomials.
+ * det(Sylvester) = resultant, which eliminates s.
+ *
+ * The matrix is (deg_g + deg_h) x (deg_g + deg_h), with entries that are
+ * polynomials in (x0,..,x3). We compute this symbolically.
+ *
+ * For GPU: we can parallelize the Bareiss algorithm steps.
+ */
+static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
+    int dg = unis_degree(g);
+    int dh = unis_degree(h);
+    if (dg < 0 || dh < 0) { WPoly z; return z; }
+
+    int N = dg + dh;  // matrix size
+    std::cout << "  Resultant: Sylvester matrix " << N << "x" << N
+              << " (deg_G2=" << dg << ", deg_G3=" << dh << ")\n";
+
+    // Build Sylvester matrix M[i][j] as WPolys
+    // First dh rows: shifted copies of g
+    // Next dg rows: shifted copies of h
+    std::vector<std::vector<WPoly>> M(N, std::vector<WPoly>(N));
+
+    for (int i = 0; i < dh; ++i)
+        for (int j = 0; j <= dg; ++j)
+            M[i][i + j] = g[dg - j];  // g coefficients in descending order
+
+    for (int i = 0; i < dg; ++i)
+        for (int j = 0; j <= dh; ++j)
+            M[dh + i][i + j] = h[dh - j];
+
+    // Bareiss algorithm for determinant (fraction-free)
+    // At each step k, M[i][j] = (M[i][j]*M[k][k] - M[i][k]*M[k][j]) / prev_pivot
+    WPoly prev_pivot;
+    prev_pivot.add_term(mono_zero(), 1);
+
+    for (int k = 0; k < N - 1; ++k) {
+        std::cout << "  Bareiss step " << k + 1 << "/" << N - 1
+                  << " (pivot: " << M[k][k].nnz() << " terms)\r" << std::flush;
+
+        WPoly pivot = M[k][k];
+        if (pivot.is_zero()) {
+            std::cout << "\n  WARNING: zero pivot at step " << k << "\n";
+            continue;
+        }
+
+        // Update rows k+1..N-1 (parallelizable with OpenMP)
+        #pragma omp parallel for schedule(dynamic)
+        for (int i = k + 1; i < N; ++i) {
+            for (int j = k + 1; j < N; ++j) {
+                // new = (M[i][j]*pivot - M[i][k]*M[k][j]) / prev_pivot
+                WPoly prod1, prod2, numer;
+
+                // prod1 = M[i][j] * pivot
+                for (const auto& [ma, ca] : M[i][j].terms)
+                    for (const auto& [mb, cb] : pivot.terms) {
+                        Mono nm(NUM_VARS, 0);
+                        for (int v = 0; v < NUM_VARS; ++v) nm[v] = ma[v] + mb[v];
+                        prod1.add_term(nm, ca * cb);
+                    }
+
+                // prod2 = M[i][k] * M[k][j]
+                for (const auto& [ma, ca] : M[i][k].terms)
+                    for (const auto& [mb, cb] : M[k][j].terms) {
+                        Mono nm(NUM_VARS, 0);
+                        for (int v = 0; v < NUM_VARS; ++v) nm[v] = ma[v] + mb[v];
+                        prod2.add_term(nm, ca * cb);
+                    }
+
+                // numer = prod1 - prod2
+                numer = wpoly_sub(prod1, prod2);
+
+                // Divide by prev_pivot (exact division in Bareiss)
+                if (prev_pivot.nnz() == 1) {
+                    // Fast path: prev_pivot is a monomial c*x^a
+                    const auto& [pm, pc] = *prev_pivot.terms.begin();
+                    WPoly divided;
+                    for (const auto& [nm, nc] : numer.terms) {
+                        Mono qm(NUM_VARS, 0);
+                        bool div_ok = true;
+                        for (int v = 0; v < NUM_VARS; ++v) {
+                            qm[v] = nm[v] - pm[v];
+                            if (qm[v] < 0) { div_ok = false; break; }
+                        }
+                        if (div_ok) {
+                            divided.add_term(qm, nc / pc);
+                        }
+                    }
+                    M[i][j] = std::move(divided);
+                } else {
+                    // General case: exact polynomial division (Bareiss guarantees no remainder)
+                    M[i][j] = wpoly_exact_div(numer, prev_pivot);
+                }
+                remove_content(M[i][j]);
+            }
+            // Clear the column entry
+            M[i][k] = WPoly();
+        }
+
+        prev_pivot = pivot;
+    }
+    std::cout << "\n";
+
+    // Determinant is M[N-1][N-1]
+    WPoly det = M[N - 1][N - 1];
+    remove_content(det);
+    std::cout << "  Resultant: " << det.nnz() << " terms, wdeg="
+              << det.weighted_degree() << "\n";
+    return det;
 }
 
 static std::vector<WPoly> stage2_elimination(
     const std::vector<WPoly>& hom_gens, double& time_ms)
 {
     auto t0 = Clock::now();
-    std::vector<WPoly> basis = hom_gens;
-    std::set<std::pair<int,int>> processed;
-    int max_iterations = 200;
-    int iteration = 0;
 
-    std::cout << "  Stage 2: Starting Buchberger elimination\n";
-    std::cout << "  Initial basis: " << basis.size() << " polynomials\n";
+    std::cout << "  Strategy: substitution + resultant (not naive Buchberger)\n";
 
-    while (iteration++ < max_iterations) {
-        std::vector<std::pair<int,int>> pairs;
-        for (int i = 0; i < (int)basis.size(); ++i)
-            for (int j = i + 1; j < (int)basis.size(); ++j)
-                if (!processed.count({i, j})) {
-                    pairs.push_back({i, j});
-                    processed.insert({i, j});
-                }
-        if (pairs.empty()) break;
+    // Step 2a: From F0_hom, solve for t1
+    // F0_hom: s*x0 + 120*s + 8*t1 = 0  =>  t1 = -s*(x0+120)/8
+    std::cout << "  Step 2a: Solving F0_hom for t1\n";
 
-        // Compute S-polynomials (OpenMP parallel)
-        std::vector<WPoly> spolys;
-        #pragma omp parallel
-        {
-            std::vector<WPoly> local;
-            #pragma omp for schedule(dynamic) nowait
-            for (int k = 0; k < (int)pairs.size(); ++k) {
-                auto [i, j] = pairs[k];
-                if (!basis[i].is_zero() && !basis[j].is_zero()) {
-                    WPoly sp = s_polynomial_z(basis[i], basis[j]);
-                    if (!sp.is_zero()) local.push_back(std::move(sp));
-                }
-            }
-            #pragma omp critical
-            for (auto& sp : local) spolys.push_back(std::move(sp));
-        }
-        if (spolys.empty()) continue;
+    // Step 2b: Substitute t1 into F1_hom, F2_hom, F3_hom
+    std::cout << "  Step 2b: Substituting t1 into F1, F2, F3\n";
 
-        // Reduce: GPU batch for large, CPU for small
-        std::vector<WPoly> new_elements;
-        if (spolys.size() > 4 && basis.size() > 8) {
-            new_elements = gpu_reduce_batch(spolys, basis);
+    // Compute max t1 degree in each generator (for denominator clearing)
+    auto get_max_t1 = [](const WPoly& f) {
+        int mx = 0;
+        for (const auto& [m, _] : f.terms) mx = std::max(mx, m[VAR_T1]);
+        return mx;
+    };
+    int max_t1_F1 = get_max_t1(hom_gens[1]);
+    int max_t1_F2 = get_max_t1(hom_gens[2]);
+    int max_t1_F3 = get_max_t1(hom_gens[3]);
+    std::cout << "  Max t1 degrees: F1=" << max_t1_F1
+              << " F2=" << max_t1_F2 << " F3=" << max_t1_F3 << "\n";
+    WPoly F1_sub = substitute_t1(hom_gens[1], max_t1_F1);
+    WPoly F2_sub = substitute_t1(hom_gens[2], max_t1_F2);
+    WPoly F3_sub = substitute_t1(hom_gens[3], max_t1_F3);
+
+    std::cout << "  F1 after t1-sub: " << F1_sub.nnz() << " terms\n";
+    std::cout << "  F2 after t1-sub: " << F2_sub.nnz() << " terms\n";
+    std::cout << "  F3 after t1-sub: " << F3_sub.nnz() << " terms\n";
+
+    // Step 2c: From F1_sub, extract coefficient of t2 and remainder
+    // F1_sub should be linear in t2: coef_t2 * t2 + remainder = 0
+    WPoly t2_coef, t2_rem;
+    for (const auto& [m, c] : F1_sub.terms) {
+        if (m[VAR_T2] == 1) {
+            Mono nm = m; nm[VAR_T2] = 0;
+            t2_coef.add_term(nm, c);
+        } else if (m[VAR_T2] == 0) {
+            t2_rem.add_term(m, c);
         } else {
-            for (auto& sp : spolys) {
-                WPoly r = reduce_z(sp, basis);
-                if (!r.is_zero()) {
-                    remove_content(r);
-                    new_elements.push_back(std::move(r));
-                }
-            }
+            std::cout << "  WARNING: F1_sub has t2^" << m[VAR_T2] << " (expected linear)\n";
         }
-        if (new_elements.empty()) continue;
-
-        for (auto& ne : new_elements) basis.push_back(std::move(ne));
-        std::cout << "  Iter " << iteration << ": " << pairs.size()
-                  << " pairs -> " << new_elements.size()
-                  << " new, basis = " << basis.size() << "\n";
     }
+    std::cout << "  t2 coefficient: " << t2_coef.nnz() << " terms\n";
+    std::cout << "  t2 remainder: " << t2_rem.nnz() << " terms\n";
 
-    // Extract elimination ideal: elements free of s, t1, t2
+    // Step 2d: Substitute t2 into F2_sub, F3_sub
+    std::cout << "  Step 2c: Substituting t2 into F2, F3\n";
+    WPoly G2 = substitute_t2(F2_sub, t2_coef, t2_rem);
+    WPoly G3 = substitute_t2(F3_sub, t2_coef, t2_rem);
+
+    std::cout << "  G2 (in s, x0..x3): " << G2.nnz() << " terms\n";
+    std::cout << "  G3 (in s, x0..x3): " << G3.nnz() << " terms\n";
+
+    // Step 2e: Convert to univariate in s, compute resultant
+    std::cout << "  Step 2d: Computing resultant to eliminate s\n";
+    UniS G2_s = to_unis(G2);
+    UniS G3_s = to_unis(G3);
+    std::cout << "  G2 degree in s: " << unis_degree(G2_s) << "\n";
+    std::cout << "  G3 degree in s: " << unis_degree(G3_s) << "\n";
+
+    WPoly res = resultant_sylvester(G2_s, G3_s);
+
+    // The resultant may have a power of x0 or other variable as a factor.
+    // Extract the irreducible factor (the degree-30 polynomial).
+    remove_content(res);
+
     std::vector<WPoly> result;
-    for (const auto& g : basis)
-        if (g.is_in_x_ring() && !g.is_zero())
-            result.push_back(g);
+    if (!res.is_zero()) {
+        result.push_back(std::move(res));
+    }
 
     time_ms = elapsed_ms(t0);
     std::cout << "  Stage 2 complete: " << result.size()

@@ -204,6 +204,49 @@ inline WPoly reduce_z(WPoly p, const std::vector<WPoly>& basis) {
     return p;
 }
 
+/* -- Exact polynomial division ----------------------------------------- */
+/* Given that a divides b exactly (remainder = 0), compute b/a.
+ * Uses repeated leading-term division. Asserts exactness. */
+inline WPoly wpoly_exact_div(const WPoly& b, const WPoly& a) {
+    assert(!a.is_zero());
+    WPoly remainder = b;
+    WPoly quotient;
+    const Mono& a_lm = a.LM();
+    const mpz_class& a_lc = a.LC();
+
+    int safety = 100000;
+    while (!remainder.is_zero() && safety-- > 0) {
+        const Mono& r_lm = remainder.LM();
+        const mpz_class& r_lc = remainder.LC();
+
+        // Check leading monomial divisibility
+        bool div_ok = true;
+        Mono qm(NUM_VARS, 0);
+        for (int i = 0; i < NUM_VARS; ++i) {
+            qm[i] = r_lm[i] - a_lm[i];
+            if (qm[i] < 0) { div_ok = false; break; }
+        }
+
+        if (!div_ok) {
+            // Not exactly divisible — this shouldn't happen in Bareiss
+            std::cerr << "wpoly_exact_div: not divisible! remainder has "
+                      << remainder.nnz() << " terms\n";
+            break;
+        }
+
+        // Coefficient must divide exactly
+        mpz_class qc;
+        mpz_tdiv_q(qc.get_mpz_t(), r_lc.get_mpz_t(), a_lc.get_mpz_t());
+
+        quotient.add_term(qm, qc);
+
+        // remainder -= qc * x^qm * a
+        WPoly sub = wpoly_mul_mono(a, qm, qc);
+        remainder = wpoly_sub(remainder, sub);
+    }
+    return quotient;
+}
+
 /* -- Content removal --------------------------------------------------- */
 inline void remove_content(WPoly& p) {
     if (p.is_zero()) return;
