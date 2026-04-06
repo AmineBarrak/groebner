@@ -406,6 +406,16 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
         for (int j = 0; j <= dh; ++j)
             M[dh + i][i + j] = h[dh - j];
 
+    // Debug: print matrix sparsity pattern
+    std::cout << "  Sylvester matrix nonzero pattern:\n";
+    for (int i = 0; i < N; ++i) {
+        std::cout << "    row " << i << ": ";
+        for (int j = 0; j < N; ++j)
+            std::cout << (M[i][j].is_zero() ? "." : std::to_string(M[i][j].nnz()).c_str()) << " ";
+        std::cout << "\n";
+    }
+    std::cout << std::flush;
+
     // Bareiss algorithm for determinant (fraction-free)
     // At each step k, M[i][j] = (M[i][j]*M[k][k] - M[i][k]*M[k][j]) / prev_pivot
     WPoly prev_pivot;
@@ -435,11 +445,12 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
         }
         WPoly pivot = M[k][k];
 
-        // Update rows k+1..N-1 (parallelizable with OpenMP)
-        #pragma omp parallel for schedule(dynamic)
+        // Update rows k+1..N-1 (sequential — matrix is small, ~10x10)
         for (int i = k + 1; i < N; ++i) {
+            // Snapshot M[i][k] before it gets overwritten in j-loop
+            WPoly Mik = M[i][k];
             for (int j = k + 1; j < N; ++j) {
-                // new = (M[i][j]*pivot - M[i][k]*M[k][j]) / prev_pivot
+                // new = (M[i][j]*pivot - Mik*M[k][j]) / prev_pivot
                 WPoly prod1, prod2, numer;
 
                 // prod1 = M[i][j] * pivot
@@ -450,8 +461,8 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
                         prod1.add_term(nm, ca * cb);
                     }
 
-                // prod2 = M[i][k] * M[k][j]
-                for (const auto& [ma, ca] : M[i][k].terms)
+                // prod2 = Mik * M[k][j]
+                for (const auto& [ma, ca] : Mik.terms)
                     for (const auto& [mb, cb] : M[k][j].terms) {
                         Mono nm(NUM_VARS, 0);
                         for (int v = 0; v < NUM_VARS; ++v) nm[v] = ma[v] + mb[v];
@@ -462,15 +473,18 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
                 numer = wpoly_sub(prod1, prod2);
 
                 // Divide by prev_pivot (exact division in Bareiss)
-                if (prev_pivot.nnz() == 1) {
+                if (numer.is_zero()) {
+                    M[i][j] = WPoly();
+                } else if (prev_pivot.nnz() == 1) {
                     // Fast path: prev_pivot is a monomial c*x^a
-                    const auto& [pm, pc] = *prev_pivot.terms.begin();
+                    Mono pm = prev_pivot.LM();
+                    mpz_class pc = prev_pivot.LC();
                     WPoly divided;
-                    for (const auto& [nm, nc] : numer.terms) {
+                    for (const auto& [nm2, nc] : numer.terms) {
                         Mono qm(NUM_VARS, 0);
                         bool div_ok = true;
                         for (int v = 0; v < NUM_VARS; ++v) {
-                            qm[v] = nm[v] - pm[v];
+                            qm[v] = nm2[v] - pm[v];
                             if (qm[v] < 0) { div_ok = false; break; }
                         }
                         if (div_ok) {
@@ -479,7 +493,7 @@ static WPoly resultant_sylvester(const UniS& g, const UniS& h) {
                     }
                     M[i][j] = std::move(divided);
                 } else {
-                    // General case: exact polynomial division (Bareiss guarantees no remainder)
+                    // General case: exact polynomial division
                     M[i][j] = wpoly_exact_div(numer, prev_pivot);
                 }
                 remove_content(M[i][j]);
