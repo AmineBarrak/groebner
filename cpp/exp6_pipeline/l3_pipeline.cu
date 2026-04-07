@@ -723,6 +723,40 @@ int main(int argc, char** argv) {
             << "total," << (t1_ms + t2_ms + t3_ms) << "," << n_procs << "," << n_threads << "\n";
         csv.close();
         std::cout << "\nSaved -> ../../results/exp6_l3_pipeline.csv\n";
+
+        // Write polynomial to file
+        {
+            std::ofstream pf("../../results/l3_polynomial.txt");
+            pf << "# L3 defining polynomial in P(2,4,6,10)\n"
+               << "# Weighted degree: 80\n"
+               << "# Number of terms: " << final_ideal[0].nnz() << "\n"
+               << "# Format: coefficient x0^a x1^b x2^c x3^d\n\n";
+
+            const char* xn[] = {"x0", "x1", "x2", "x3"};
+            for (const auto& [m, c] : final_ideal[0].terms) {
+                pf << c;
+                for (int i = VAR_X0; i <= VAR_X3; ++i)
+                    if (m[i] > 0) {
+                        pf << "*" << xn[i - VAR_X0];
+                        if (m[i] > 1) pf << "^" << m[i];
+                    }
+                pf << "\n";
+            }
+            pf.close();
+            std::cout << "Saved polynomial -> ../../results/l3_polynomial.txt\n";
+
+            // Also write monomial-only summary (without huge coefficients)
+            std::ofstream ms("../../results/l3_monomials.txt");
+            ms << "# L3 monomial structure: 318 terms of weighted degree 80\n"
+               << "# Format: a b c d  |coeff_digits|\n";
+            for (const auto& [m, c] : final_ideal[0].terms) {
+                ms << m[VAR_X0] << " " << m[VAR_X1] << " "
+                   << m[VAR_X2] << " " << m[VAR_X3] << "  "
+                   << c.get_str().size() << "\n";
+            }
+            ms.close();
+            std::cout << "Saved monomial summary -> ../../results/l3_monomials.txt\n";
+        }
     }
 
     MPI_Finalize();
