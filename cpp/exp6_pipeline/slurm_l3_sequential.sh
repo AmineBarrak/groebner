@@ -2,10 +2,9 @@
 #SBATCH --job-name=l3_seqpy
 #SBATCH --output=l3_sequential_%j.out
 #SBATCH --error=l3_sequential_%j.err
-#SBATCH --time=48:00:00
 #SBATCH --mem=64G
 #SBATCH --cpus-per-task=1
-#SBATCH --partition=general-long
+#SBATCH --partition=general
 
 echo "=== Job Info ==="
 echo "Job ID:    $SLURM_JOB_ID"
