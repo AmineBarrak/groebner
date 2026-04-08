@@ -4,7 +4,8 @@
 #SBATCH --error=l3_sequential_%j.err
 #SBATCH --mem=64G
 #SBATCH --cpus-per-task=1
-#SBATCH --partition=general
+#SBATCH --time=7-00:00:00
+#SBATCH --partition=general-long
 
 echo "=== Job Info ==="
 echo "Job ID:    $SLURM_JOB_ID"
