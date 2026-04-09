@@ -1,0 +1,78 @@
+PUBLICATION-QUALITY PLOTS GENERATED
+====================================
+
+Script: generate_paper_plots.py
+Location: /sessions/exciting-great-ride/mnt/groebner_experiments/groebner/cpp/exp6_pipeline/
+
+Output Directory: figures/
+
+Generated Plots (all as PDF and PNG at 300 DPI):
+================================================
+
+1. l3_pivot_rate.pdf / l3_pivot_rate.png
+   - Title: Sequential Python Ansatz: Pivot Progress for L₃
+   - X-axis: Pivot number (0 to 521)
+   - Y-axis: Cumulative time (seconds)
+   - Features: Data points connected by blue line, horizontal reference line for 
+     C++ pipeline completion (14926s), vertical target line (521 pivots), 
+     linear extrapolation projection
+   - Shows computational progression through 521 pivots in Gaussian elimination
+
+2. l3_pivot_interval.pdf / l3_pivot_interval.png
+   - Title: Per-Block Elimination Time (10 pivots each)
+   - X-axis: Pivot block (10, 20, ..., 270)
+   - Y-axis: Time for 10-pivot block (seconds)
+   - Features: Bar chart showing interval times, highlighting GCD effectiveness variability
+   - Shows time per 10-pivot elimination block
+
+3. baseline_comparison_l3.pdf / baseline_comparison_l3.png
+   - Title: L₃ in P(2,4,6,10): Method Comparison
+   - X-axis: Time (s, log scale)
+   - Methods compared:
+     * C++ Parallel Pipeline: 14926s (green)
+     * Sequential Python Ansatz: 170000s (blue, hatched - projected)
+     * SymPy groebner: >24h / Did Not Finish (red)
+     * Modular CRT (500 primes): Failed (gray, hatched)
+   - Features: Horizontal bar chart with annotations, log scale for wide range
+
+4. l2_vs_l3_scaling.pdf / l2_vs_l3_scaling.png
+   - Title: Scaling from L₂ to L₃ in P(2,4,6,10)
+   - Two subplots:
+     Left: Problem dimensions (linear scale)
+       - Parametric degree: L₂=4 → L₃=12
+       - Monomials: L₂=47 → L₃=521
+       - Matrix rows: L₂≈130 → L₃=4374
+       - Polynomial terms: L₂=34 → L₃=318
+     Right: Computational cost (log scale)
+       - C++ pipeline time: L₂=0.0228s → L₃=14926s
+   - Features: Grouped bars with value labels, shows scaling explosion
+
+5. coefficient_size.pdf / coefficient_size.png
+   - Title: Maximum Coefficient Size by Example
+   - X-axis: Example (toy, L₂, L₃)
+   - Y-axis: Max coefficient bit size (log scale)
+   - Data:
+     * P(1,2,3) toy: ~7 bits
+     * L₂ in P(2,4,6,10): ~50 bits
+     * L₃ in P(2,4,6,10): 14649 bits
+   - Features: Bar chart with annotation explaining why modular CRT fails for L₃
+
+Style Settings:
+===============
+- Font: Serif (DejaVu Serif) with size 11pt
+- No grids on plots
+- Academic appearance with clean spines
+- High DPI output (300 DPI for publication)
+- LaTeX-style mathematical rendering for titles and labels
+- Professional color palette (green, blue, orange, red)
+- All text uses proper mathematical notation ($\mathcal{L}_2$, $\mathbb{P}$, etc.)
+
+Usage:
+======
+Run the script with:
+  python3 generate_paper_plots.py
+
+Or execute directly:
+  ./generate_paper_plots.py
+
+All plots are automatically saved to the figures/ subdirectory.
